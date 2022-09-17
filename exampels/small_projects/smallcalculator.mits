@@ -1,0 +1,31 @@
+define main
+
+    int num1 = input "Enter first number: "
+
+    int num2 = input "Enter second number: "
+
+    str op = input "Enter op: "
+    if op == "+" then call subprocess plus else pass
+    if op == "-" then call subprocess min else pass
+    if op == "*" then call subprocess mul else pass
+    if op == "/" then call subprocess div else pass
+
+end
+
+
+define subprocess plus : main
+    print num1 + num2
+end subprocess
+
+define subprocess min : main
+    print num1 - num2
+end subprocess
+
+define subprocess mul : main
+    print num1 * num2
+end subprocess
+
+
+define subprocess div : main  
+    print num1 - num2
+end subprocess

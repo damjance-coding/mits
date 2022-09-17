@@ -1,0 +1,19 @@
+define main 
+
+int x = 0
+
+while x < 10 then call subprocess test
+
+
+
+
+end
+
+
+define subprocess test : main
+
+    x = x + 1
+    print x
+
+
+end subprocess

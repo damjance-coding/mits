@@ -1,0 +1,8 @@
+define main
+
+bool test = True == False
+
+print test
+
+
+end

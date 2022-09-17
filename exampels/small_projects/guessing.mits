@@ -1,0 +1,33 @@
+define guessinggame
+
+int cguess = 1
+int num = random 1 15
+int guess = input "Enter your guess: "
+
+while cguess < 5 then call subprocess test
+
+if guess == num then call subprocess handlecong else pass
+
+end
+
+define subprocess handlecong: guessinggame 
+
+
+    print "Congratulations!"
+
+end subprocess
+
+define subprocess test : guessinggame
+
+    cguess = cguess + 1
+    if guess != num then call subprocess handleguess else pass
+
+
+end subprocess
+
+define subprocess handleguess : guessinggame
+    print "Wrong answer!"
+    guess = input "Enter your guess: "
+
+end subprocess
+

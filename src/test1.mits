@@ -1,0 +1,15 @@
+
+
+
+define test1
+
+    call subprocess x
+
+end
+
+
+define subprocess x : test1
+
+    print "test"
+
+end subprocess

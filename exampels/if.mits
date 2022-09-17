@@ -1,0 +1,14 @@
+define main 
+
+    str name = input "Whats your name: "
+
+    if name == "Aleksandra" then call subprocess handleif else print "nice name" // U can use if both ways , but only one statement if u dont use subprocess
+
+end
+
+
+define subprocess handleif : main
+
+    print "retard"
+
+end subprocess

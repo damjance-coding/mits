@@ -1,0 +1,17 @@
+define VariableFunction
+
+    int x = 69
+    float y = 69.69
+    str z = "69"
+    print x
+    print y
+    print z
+    // Currently in mits there are 3 data types : floats, ints and strings
+
+end
+
+define main //main function is necessary, otherwise it will fail
+
+call VariableFunction // To call functions type call then the name of the funciion
+
+end
