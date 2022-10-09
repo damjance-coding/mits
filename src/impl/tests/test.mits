@@ -1,0 +1,10 @@
+#include "std/std.mits"
+
+
+
+function main() {
+   
+    write "Hello world!"
+
+}
+

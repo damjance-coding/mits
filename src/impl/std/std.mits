@@ -1,0 +1,73 @@
+function len () {
+    var = param 0
+    len = 0
+    for ch in var { 
+        len = len + 1
+    } end
+    return len
+}
+
+function append() {
+    TheVar = param 0
+    TheValue = param 1
+
+    TheVar -> len()
+    len = len()
+    
+    TheVar[len] = TheValue
+    return TheVar
+}
+
+function splitchars () {
+    i = param 0
+    write i
+    arr = []
+    for x in i {
+        arr -> append()
+        x -> append() 
+        arr = append()
+    } end
+    return arr
+}
+
+function stringify() {
+    x = param 0
+    return "{x}"
+}
+
+
+function getidn() {
+    var = param 0
+    val = param 1
+    idn = 0
+    arr = []
+    for elem in var {
+        if (elem == val) {
+            arr -> append()
+            idn -> append()
+            arr = append()
+        } end
+        idn ++
+    } end
+    return arr
+}
+
+
+function pop() {
+   TheVar = param 0
+
+ 
+
+    TheVar -> len()
+    len =  len()
+    idx = 0
+    arr = []
+    ret = TheVar[len - 1]
+    while (idx < len - 1) { 
+        arr -> len()
+        arl = len()
+        arr[arl] = TheVar[idx]
+        idx = idx + 1
+    } end
+    return [arr, ret]
+}
