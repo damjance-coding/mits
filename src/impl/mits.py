@@ -17,89 +17,6 @@ gen = ()
 
 sys.setrecursionlimit(2000)
 
-def transfertofunctions(x):
-    global gen
-    for index, currentnode in enumerate(x):
-        
-        if currentnode[0] == 'op_declare_function':
-            gen += (currentnode, )
-            pos  = 0
-            func = ()
-            funcname = currentnode[1]
-
-            #Get the nextelement of the loop
-            nextelem = x[(index + pos) % len(x)]
-            
-            
-
-            while nextelem[0] != "op_close":
-                pos += 1
-                nextelem = x[(index + pos) % len(x)]
-                gen += (nextelem,)
-
-
-                        
-                        
-                if nextelem[0] != "op_close": func += (nextelem, )
-                if nextelem[0] ==  "op_close":
-                  if funcname not in env:
-                    env[funcname] = func
-                    env[f"{funcname}vars"] = {}
-                    env[f"{funcname}macros"] = {}
-                    env[f"{funcname}params"] = []
-                    env[f"{funcname}returnvalue"] = []
-                  else : raise NameErr(f"NameErr : Function `{funcname}` alredy exists")
-
-        if currentnode[0] == 'op_declare_global_macro':
-                gen += (currentnode, )
-                pos  = 0
-                subpr = ()
-                
-
-            #Get the nextelement of the loop
-                nextelem = x[(index + pos) % len(x)]
-            
-            
-
-                while nextelem[0] != "op_close":
-                    pos += 1
-                    nextelem = x[(index + pos) % len(x)]
-                    gen += (nextelem,)
-
-
-                        
-                        
-                    if nextelem[0] != "op_close": subpr += (nextelem, )
-                if nextelem[0] ==  "op_close":
-                    if currentnode[1] not in env["macros"]:
-                        env["macros"][currentnode[1]] = (subpr,)           
-                    else : raise NameErr(f"NameErr : Global macro `{currentnode[1]}` alredy exists") 
-
-
-        if currentnode[0] == 'op_declare_local_macro':
-                gen += (currentnode, )
-                pos  = 0
-                subpr = ()
-                funcname = currentnode[2]
-
-            #Get the nextelement of the loop
-                nextelem = x[(index + pos) % len(x)]
-            
-            
-
-                while nextelem[0] != "op_close":
-                    pos += 1
-                    nextelem = x[(index + pos) % len(x)]
-                    gen += (nextelem,)
-
-
-                        
-                        
-                    if nextelem[0] != "op_close": subpr += (nextelem, )
-                if nextelem[0] ==  "op_close":
-                    if currentnode[1] not in env[f"{funcname}macros"]:
-                        env[f"{funcname}macros"][currentnode[1]] = (subpr,)           
-                    else : raise NameErr(f"NameErr : Function {funcname} alredy have macro `{currentnode[1]}` alredy exists")
 
 
 
@@ -111,12 +28,41 @@ for line in prog.splitlines():
     else : pass
 
 
+def crossreference_functions(obj) :
+    tokens = obj
+    stack = []
+    for index , token in enumerate(tokens) :
+        if token[0] == "op_declare_function":
+            stack.append((index , token[0], token[1]))
 
-# print(parsed_tokens)
-transfertofunctions(parsed_tokens)
+        elif token[0] == "op_close" :
+            pos = stack.pop()
+            tokens = list(tokens)
+            tokens[pos[0]] = (pos[1], pos[2], index)
+            tokens = tuple(tokens)
+
+    return tokens
+
+parsed_tokens = crossreference_functions(parsed_tokens)
+
+def transfer_to_functions(obj):
+    for pos , op in enumerate(obj) :
+       
+        if op[0] == "op_declare_function":
+            index = pos + 1
+            body = ()
+            while index < op[2] :
+                body += (obj[index],)
+                index += 1
+            env[f"{op[1]}"] = body
+            env[f"{op[1]}vars"] = {}
 
 
-toplevel = tuple(set(gen) ^ set(parsed_tokens))
+transfer_to_functions(parsed_tokens)
+
+print(env)
+
+# toplevel = tuple(set(gen) ^ set(parsed_tokens))
 
 def walktreetoplevel(node):
     if node[0] == "expr_string":
@@ -191,7 +137,7 @@ def walktreetoplevel(node):
                 importtokens += (y,)
             else : pass
 
-        transfertofunctions(importtokens)
+        # transfertofunctions(importtokens)
         
 
     else : raise InstructionErr(f"InstructionErr : Invald instruction {node[1]}")
@@ -199,52 +145,69 @@ def walktreetoplevel(node):
 
 
 
-for line in toplevel:
+# for line in toplevel:
      
-        walktreetoplevel(line)
+#         walktreetoplevel(line)
 
 
 
-def crossreference(obj1) :
-    stack = []
-    ifindex = []
-    obj = obj1
-    index = 0
-    for line in obj :
-        for op in (line,) :
-            if op[0] == "op_if_start":
-                ifindex.append(index)
-                stack.append(("op_if_start", index, op[1]),)
+# def crossreference(obj1) :
+#     stack = []
+#     ifindex = []
+#     obj = obj1
+#     index = 0
+#     for line in obj :
+#         for op in (line,) :
+#             if op[0] == "op_if_start":
+#                 ifindex.append(index)
+#                 stack.append(("op_if_start", index, op[1]),)
 
-            elif op[0] == "op_close_end":
+#             elif op[0] == "op_close_end":
                 
-                    x = stack.pop()
-                    if x[0] != "else":
-                        obj = list(obj)
-                        obj[x[1]] = (x[0], x[2], index)
-                        obj = tuple(obj)
-                    else :
-                        y = ifindex.pop()
-                        obj = list(obj)
+#                     x = stack.pop()
+#                     if x[0] != "else":
+#                         obj = list(obj)
+#                         obj[x[1]] = (x[0], x[2], index)
+#                         obj = tuple(obj)
+#                     else :
+#                         y = ifindex.pop()
+#                         obj = list(obj)
         
-                        obj[y] = (obj[y][0], obj[y][1], obj[y][2] , x[1], index)
+#                         obj[y] = (obj[y][0], obj[y][1], obj[y][2] , x[1], index)
                       
-                        obj = tuple(obj)
-            elif op[0] == "else":
-                stack.append(("else", index,  (True,)))
+#                         obj = tuple(obj)
+#             elif op[0] == "else":
+#                 stack.append(("else", index,  (True,)))
                 
 
-            elif op[0] == "for_start":
-                stack.append(("for_start", index, op[1]),)
-            elif op[0] == "op_start_while":
-                stack.append(("op_start_while", index, op[1]),)
+#             elif op[0] == "for_start":
+#                 stack.append(("for_start", index, op[1]),)
+#             elif op[0] == "op_start_while":
+#                 stack.append(("op_start_while", index, op[1]),)
               
             
 
-            index += 1
-    return obj
+#             index += 1
+#     return obj
         
 
+def crossreference_blocks(obj):
+    block = obj
+    stack = []
+    for index , node in enumerate(block) :
+        if node[0] == "op_if_start":
+            stack.append((node[0], node[1] , index))
+        elif node[0] == "op_start_while" :
+            stack.append((node[0], node[1] , index))
+
+        elif node[0] == "for_start" :
+            stack.append((node[0], node[1] , index))
+        elif node[0] == "op_close_end":
+            pos = stack.pop()
+            block = list(block)
+            block[pos[2]] = (pos[0], pos[1], index)
+
+    return block
 
 def walktree(obj, funcname):
     
@@ -353,7 +316,7 @@ def walktree(obj, funcname):
         elif node[0] == "callmacro":
             if node[1] in env[f"{funcname}macros"]:
         
-                walktree(crossreference(env[f"{funcname}macros"][node[1]][0]) , funcname)
+                walktree(crossreference_blocks(env[f"{funcname}macros"][node[1]][0]) , funcname)
                     
             else : raise NameErr(f"NameErr : function `{funcname}` does not have a macro named `{node[1]}`")
             pos += 1
@@ -375,14 +338,6 @@ def walktree(obj, funcname):
             res = walktree((node[1],), funcname)
            
             if len(node) != 5:
-            # try :
-               
-            
-              
-            #    
-                
-                
-            # except: 
               
                 if res == False :
                         pos = node[2]
@@ -407,9 +362,7 @@ def walktree(obj, funcname):
   
                     
                     
-                    y = ()
-                    y += (p.parse(l.tokenize("else {")),)
-                    y += (p.parse(l.tokenize(" } ")),)
+             
                     x += y
                   
                     walktree(x, funcname)
@@ -431,25 +384,25 @@ def walktree(obj, funcname):
 
     
         elif node[0] == "for_start":
-        
-            VarToLoop = walktree((node[1][1],), funcname)
-            NewVarName = node[1][0]
-        
             
-            test = ()
-            pos += 1
-            while pos != node[2] :
-                    
-                    
-                  
-                    test += (obj[pos],)
-                    pos += 1
-            
-            test = crossreference(test)
-       
-            for i in VarToLoop :
-                env[f"{funcname}vars"][NewVarName] = i
-                walktree(test, funcname)
+            val = walktree((node[1][1],), funcname)
+            varname = node[1][0]
+           
+
+            index = pos
+            body = ()
+            index += 1
+            while index < node[2]:
+                    body += (obj[index],)
+                    index += 1
+           
+            body = crossreference_blocks(body)
+           
+            for v in val :
+                env[f"{funcname}vars"][varname] = v
+                walktree(body, funcname)
+            if index == node[2]:
+                    pos = node[2] + 1
 
             pos += 1
 
@@ -477,28 +430,23 @@ def walktree(obj, funcname):
             # wip = pos
             
             if walktree((node[1],), funcname) == False:
-                pos = node[2]
-            else : 
-                pos += 1
-                test = ()
-                while pos != node[2] :
-                    
-                    
-                  
-                    test += (obj[pos],)
-                    pos += 1
-                 
+                pos = node[2] + 1
                 
-                test = crossreference(test)
-                while walktree((node[1],), funcname) == True:
-                    walktree(test, funcname)
-                    # pos += 1
-                  
-                   
-                    
-                    
+            else :
+                index = pos
+                body = ()
+                index += 1
+                while index < node[2]:
+                    body += (obj[index],)
+                    index += 1
+               
+                body = crossreference_blocks(body)
+                
+                while walktree((node[1],) , funcname)  : walktree(body, funcname)
+                
+                if index == node[2]:
+                    pos = node[2] + 1
 
-                   
             pos += 1
 
         elif node[0] == "plusplus" :
@@ -517,7 +465,7 @@ def walktree(obj, funcname):
 
         elif node[0] == "function_call":
             if node[1] in env:
-                env[node[1]] = crossreference(env[node[1]])
+                env[node[1]] = crossreference_blocks(env[node[1]])
                 walktree(env[node[1]], node[1])
             try:
                 val_to_return = env[f"{node[1]}returnvalue"][0]
@@ -582,7 +530,7 @@ def walktree(obj, funcname):
     
 
 
-env["main"]= crossreference(env["main"])
+env["main"]= crossreference_blocks(env["main"])
 
 
 walktree(env["main"], "main")

@@ -1,13 +1,6 @@
-#include "std/std.mits"
+function main () {
+  x = 0
 
 
-function main() {
-  
-  0 -> range()
-  100 -> range()
-  
-  for i in range() {
-    write i    
-  }
-   
+ 
 } fin
