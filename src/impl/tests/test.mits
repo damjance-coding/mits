@@ -1,10 +1,23 @@
 #include "std/std.mits"
 
 
-
 function main() {
+   num = 0
    
-    write "Hello world!"
+   if (num == 1) {
+    write "went into first if"
+   }
+   else {
+        if (num == 0) {
+            write "went into second if"
+        }
+        
+        
+        if (num == 2) {
+            write "went 3rd if"
+        }
 
-}
-
+       
+   }
+   
+} fin

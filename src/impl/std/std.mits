@@ -3,9 +3,9 @@ function len () {
     len = 0
     for ch in var { 
         len = len + 1
-    } end
+    } 
     return len
-}
+} fin
 
 function append() {
     TheVar = param 0
@@ -16,24 +16,24 @@ function append() {
     
     TheVar[len] = TheValue
     return TheVar
-}
+} fin
 
 function splitchars () {
     i = param 0
-    write i
+    
     arr = []
     for x in i {
         arr -> append()
         x -> append() 
         arr = append()
-    } end
+    } 
     return arr
-}
+} fin
 
 function stringify() {
     x = param 0
     return "{x}"
-}
+} fin
 
 
 function getidn() {
@@ -46,18 +46,15 @@ function getidn() {
             arr -> append()
             idn -> append()
             arr = append()
-        } end
+        } 
         idn ++
-    } end
+    } 
     return arr
-}
+} fin
 
 
 function pop() {
    TheVar = param 0
-
- 
-
     TheVar -> len()
     len =  len()
     idx = 0
@@ -68,6 +65,165 @@ function pop() {
         arl = len()
         arr[arl] = TheVar[idx]
         idx = idx + 1
-    } end
+    } 
     return [arr, ret]
-}
+} fin
+
+
+function splitwords () {
+   string = param 0
+   string = string + "\s"
+   tmp = ""
+   arr = []
+   for char in string {
+      
+      if (char != "\s") {
+         tmp = tmp + char
+      }
+      else {
+        arr -> append()
+        tmp -> append()
+        arr = append()
+        tmp = ""
+      }
+      
+   }
+   return arr
+} fin
+
+
+function splitlines () {
+   string = param 0
+   string = string + "\n"
+   tmp = ""
+   arr = []
+   for char in string {
+      
+      if (char != "\n") {
+         tmp = tmp + char
+      }
+      else {
+        arr -> append()
+        tmp -> append()
+        arr = append()
+        tmp = ""
+      }
+      
+   }
+   return arr
+
+   
+} fin
+
+
+function startswith() {
+   val = param 0
+   prefix = param 1
+   
+   t = 10 == 10
+   f = 10 != 10
+   res = 0
+   prefix -> len()
+   len = len()
+   if(len == 1) {
+      if (val[0] == prefix){
+         res = t
+      } 
+      else {
+         res = f
+      }
+   }
+   else {
+       idn  = 0
+       tocom = []
+      while (idn < len ) {
+         v = val[idn]
+         
+         tocom -> append()
+         v -> append()
+         tocom = append()
+         idn ++
+      }
+      prefix -> splitchars()
+      tocom1 = splitchars()
+      if (tocom == tocom1) {
+         res = t
+      }
+      else {
+         res = f
+      }
+   }
+   return res
+} fin
+
+
+function endswith() {
+   val = param 0
+   pref = param 1 
+   val -> len()
+   vlen = len()
+
+   pref -> len()
+   plen = len()
+   res = 0
+   if (plen == 1) {
+      if (val[vlen - 1] == pref) {
+         res = true
+      } 
+      if (val[vlen - 1] != pref) {
+         res = false
+      }
+   }
+   else {
+      val -> splitchars()
+      val = splitchars()
+     
+      lv = vlen - plen
+      arr = []
+      while (lv < vlen ) {
+         v = val[lv]
+         write v
+         arr -> append()
+         v -> append()
+         arr = append()
+         lv = lv + 1
+      }
+      pref -> splitchars()
+      pref = splitchars()
+     
+      if (arr == pref) {
+         res = true
+      }
+      else {
+         res = false
+      }
+     
+      
+      
+   }
+   return res
+} fin
+
+
+ function ToIntiger () {
+    x = param 0
+    arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    arr1 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
+    res = 0
+   
+    for i in x {
+        arr1 -> getidn()
+        i -> getidn()
+        idn = getidn()
+        x = idn[0]
+        y = arr[x]
+        res = 10 * res + y 
+
+        
+
+    }
+    
+    return res
+
+} fin

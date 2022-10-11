@@ -6,8 +6,8 @@ class Lex(Lexer):
 
     
 
-    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER, MACRO,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN,   FOR , IN, TYPEOF, END }
-    literals = {"{", "}", "+", "-", "*", "/", "(", ")", "=", "<", ">", ",", "[", "]", ":"}
+    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER, MACRO,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END }
+    literals = {"{", "}", "+", "-", "*", "/", "(", ")", "=", "<", ">", ",", "[", "]", ":", "%", "^"}
 
     ignore = '\t \n'
 
@@ -35,13 +35,14 @@ class Lex(Lexer):
     ARGC = r"argc"
     PARAM = r"param"
     RETURN = r'return'
- 
+    TRUE = 'true'
+    FALSE= 'false'
     #TRY = r"try"
     #EXCEPT = r"except"
     FOR  = "for"
     IN = "in"
     TYPEOF = r"typeof"
-    END = r"end"
+    END = r"fin"
     # PassVariable = r'PassValue'
     @_(r"\d+\.\d*")
     def FLOAT(self, t):

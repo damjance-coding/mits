@@ -246,15 +246,8 @@ def crossreference(obj1) :
         
 
 
-
-
-
-
-
-
-
 def walktree(obj, funcname):
-   
+    
     pos = 0
     while pos < len(obj):
         node = obj[pos]
@@ -277,12 +270,16 @@ def walktree(obj, funcname):
                 elif i == "\\r":
                     i = i.replace("\\r", "\r")
                     str += i
-            
+
+                elif i == "\\s":
+                    i = i.replace("\\s", " ")
+                    str += i
+
                 elif i.startswith("{") and i.endswith("}"):
                 
                     x = i[1:-1]
                     v = p.parse(l.tokenize(x))
-                    str += walktree(v, funcname)
+                    str += walktree((v,), funcname)
                 else :  str += i
             pos += 1
             return str
@@ -295,6 +292,14 @@ def walktree(obj, funcname):
         elif node[0] == "expr_add":
             pos += 1
             return walktree((node[1],), funcname) + walktree((node[2],), funcname)
+
+        elif node[0] == "expr_prec":
+            pos += 1
+            return walktree((node[1],), funcname) % walktree((node[2],), funcname)
+
+        elif node[0] == "expr_prec":
+            pos += 1
+            return walktree((node[1],), funcname) ^ walktree((node[2],), funcname)
            
         elif node[0] == "expr_sub":
             pos += 1
@@ -346,8 +351,6 @@ def walktree(obj, funcname):
             return node[1]
 
         elif node[0] == "callmacro":
-      
-    #   print(env[f"{funcname}macros"]["whand"])
             if node[1] in env[f"{funcname}macros"]:
         
                 walktree(crossreference(env[f"{funcname}macros"][node[1]][0]) , funcname)
@@ -403,13 +406,12 @@ def walktree(obj, funcname):
                         pos += 1
   
                     
-                    
-                    y = ()
-                    y += (p.parse(l.tokenize("else {")),)
-                    y += (p.parse(l.tokenize(" } end")),)
-                    x += y
-                    
-                  
+                    print(x)
+                    # y = ()
+                    # # y += (p.parse(l.tokenize("else {")),)
+                    # # y += (p.parse(l.tokenize(" } ")),)
+                    # x += y
+                    x = crossreference(x)
                     walktree(x, funcname)
                   
                     
@@ -452,6 +454,7 @@ def walktree(obj, funcname):
             pos += 1
 
         elif node[0] == "con_eq_eq":
+            
              pos += 1
              return walktree((node[1],), funcname) == walktree((node[2],), funcname)
         elif node[0] == "con_not_eq":
@@ -542,12 +545,19 @@ def walktree(obj, funcname):
                 else : raise IndexErr(f"IndexErr : invalid index `{modf}`")
             else : raise IndexErr(f"IndexErr : invalid index `{modf}`")
             pos += 1
-
+        elif node[0] == "op_close" : pos += 1
         elif node[0] == "try_except":
             try : walktree((node[1],), funcname)
             except : walktree((node[2],), funcname)
             pos += 1
        
+        elif node[0] == "true" or node[0] == "false":
+            if node[0] == "true" :
+                pos += 1
+                return True
+            else :
+                pos += 1
+                return False
             
         elif node[0] == "pass_param":
             if node[2] in env :
@@ -576,5 +586,3 @@ env["main"]= crossreference(env["main"])
 
 
 walktree(env["main"], "main")
-
-# else : raise NameErr("NameErr : No entry point `main` found in the program")

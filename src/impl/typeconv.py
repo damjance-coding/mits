@@ -6,6 +6,6 @@ def typeconv(type) :
     elif type == list : 
         return "Array"
     elif type == str :
-        return "string"
+        return "String"
     else :
         return f"UNHANDLED TYPE {type}"

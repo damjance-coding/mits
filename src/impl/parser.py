@@ -16,13 +16,13 @@ class Pars(Parser):
     @_('FUNCTION IDENTIFIER "(" ")"  "{" ')
     def statement(self ,p):
         return ("op_declare_function", p.IDENTIFIER)
-    @_("RETURN expr")
+    @_("RETURN expr", "RETURN condition")
     def statement(self ,p):
-        return ("return", p.expr)
+        return ("return", p[1])
     @_("INCLUDE STRING")
     def statement(self , p):
         return ("include", p.STRING)
-    @_('"}" END')
+    @_('"}"')
     def statement(self ,p):
         return ("op_close_end", )
     # @_('TRY "{" statement "}"  EXCEPT "{" statement "}" ')
@@ -41,7 +41,7 @@ class Pars(Parser):
     def statement(self ,p):
         return ("op_declare_local_macro", p.IDENTIFIER0 , p.IDENTIFIER1 )
 
-    @_('"}"')
+    @_('"}" END')
     def statement(self ,p):
         return ("op_close",) 
 
@@ -62,6 +62,15 @@ class Pars(Parser):
     def expr(self, p):
         return ('expr_sub', p.expr0, p.expr1)
 
+    @_('expr "%" expr')
+    def expr(self, p):
+        return ('expr_prec', p.expr0, p.expr1)
+
+    @_('expr "^" expr')
+    def expr(self, p):
+        return ('expr_pow', p.expr0, p.expr1)
+    
+
     @_('expr "*" expr')
     def expr(self, p):
         return ('expr_mul', p.expr0, p.expr1)
@@ -70,7 +79,14 @@ class Pars(Parser):
     def expr(self, p):
         return ('expr_div', p.expr0, p.expr1)
     
+    @_("TRUE")
+    def condition(self ,p):
+        return ("true",)
+
     
+    @_("FALSE")
+    def condition(self ,p):
+        return ("false",)
 
     @_("STRING")
     def expr(self ,p):
