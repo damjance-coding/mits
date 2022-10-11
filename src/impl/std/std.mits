@@ -227,3 +227,17 @@ function endswith() {
     return res
 
 } fin
+
+
+function range() {
+    from = param 0
+    to = param 1
+    arr = []
+    while (from != to) {
+        arr -> append()
+        from -> append()
+        arr = append()
+        from ++
+    }
+    return arr
+} fin

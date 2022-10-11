@@ -2,14 +2,12 @@
 
 
 function main() {
-   num = 0
-
-  if (num == 1) {
-
-  } 
-  else {
-    write "teast"
-  }
   
+  0 -> range()
+  100 -> range()
+  
+  for i in range() {
+    write i    
+  }
    
 } fin

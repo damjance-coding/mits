@@ -1,3 +1,5 @@
+
+from re import L, T
 from errors import *
 from lexer import Lex
 from parser import Pars
@@ -404,12 +406,12 @@ def walktree(obj, funcname):
                         pos += 1
   
                     
-                    print(x)
-                    # y = ()
-                    # # y += (p.parse(l.tokenize("else {")),)
-                    # # y += (p.parse(l.tokenize(" } ")),)
-                    # x += y
-                    x = crossreference(x)
+                    
+                    y = ()
+                    y += (p.parse(l.tokenize("else {")),)
+                    y += (p.parse(l.tokenize(" } ")),)
+                    x += y
+                  
                     walktree(x, funcname)
                   
                     
