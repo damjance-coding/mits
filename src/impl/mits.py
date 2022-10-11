@@ -1,5 +1,3 @@
-
-from re import L, T
 from errors import *
 from lexer import Lex
 from parser import Pars
