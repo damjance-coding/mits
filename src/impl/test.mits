@@ -1,6 +1,4 @@
+#include "std/std.mits"
 function main () {
-  x = 0
 
-
- 
 } fin

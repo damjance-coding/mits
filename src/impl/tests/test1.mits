@@ -1,0 +1,5 @@
+function spc () {
+    x = param 0
+    y = x - 2
+    return y
+} fin

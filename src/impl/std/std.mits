@@ -18,7 +18,7 @@ function append() {
     return TheVar
 } fin
 
-function splitchars () {
+function splitchars() {
     i = param 0
     
     arr = []
@@ -26,6 +26,7 @@ function splitchars () {
         arr -> append()
         x -> append() 
         arr = append()
+        write x
     } 
     return arr
 } fin
@@ -70,7 +71,7 @@ function pop() {
 } fin
 
 
-function splitwords () {
+function splitwords() {
    string = param 0
    string = string + "\s"
    tmp = ""
