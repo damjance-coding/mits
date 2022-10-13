@@ -18,94 +18,98 @@ Rule 14    statement -> IDENTIFIER ARRAY = expr
 Rule 15    statement -> } END
 Rule 16    statement -> MACRO IDENTIFIER : IDENTIFIER ( ) {
 Rule 17    statement -> GLOBAL MACRO IDENTIFIER {
-Rule 18    statement -> }
-Rule 19    statement -> INCLUDE STRING
-Rule 20    statement -> RETURN condition
-Rule 21    statement -> RETURN expr
-Rule 22    statement -> FUNCTION IDENTIFIER ( ) {
-Rule 23    expr -> IDENTIFIER ( )
-Rule 24    expr -> PARAM expr
-Rule 25    expr -> ARGV
-Rule 26    expr -> ARGC
-Rule 27    expr -> expr ARRAY
-Rule 28    expr -> ARRAY
-Rule 29    expr -> FLOAT
-Rule 30    expr -> GLOBAL IDENTIFIER
-Rule 31    expr -> IDENTIFIER
-Rule 32    expr -> ( expr )
-Rule 33    expr -> - expr  [precedence=right, level=3]
-Rule 34    expr -> NUMBER
-Rule 35    expr -> STRING
-Rule 36    expr -> expr / expr  [precedence=left, level=2]
-Rule 37    expr -> expr * expr  [precedence=left, level=2]
-Rule 38    expr -> expr ^ expr
-Rule 39    expr -> expr % expr
-Rule 40    expr -> expr - expr  [precedence=left, level=1]
-Rule 41    expr -> expr + expr  [precedence=left, level=1]
-Rule 42    expr -> TYPEOF expr
-Rule 43    condition -> expr < expr
-Rule 44    condition -> expr NOTEQ expr
-Rule 45    condition -> expr EQSTHAN expr
-Rule 46    condition -> expr EQGTHAN expr
-Rule 47    condition -> expr > expr
-Rule 48    condition -> expr EQEQ expr
-Rule 49    condition -> FALSE
-Rule 50    condition -> TRUE
-Rule 51    var_assign -> GLOBAL IDENTIFIER = condition
-Rule 52    var_assign -> GLOBAL IDENTIFIER = expr
-Rule 53    var_assign -> IDENTIFIER = condition
-Rule 54    var_assign -> IDENTIFIER = expr
+Rule 18    statement -> EXCEPT {
+Rule 19    statement -> TRY {
+Rule 20    statement -> }
+Rule 21    statement -> INCLUDE STRING
+Rule 22    statement -> RETURN condition
+Rule 23    statement -> RETURN expr
+Rule 24    statement -> FUNCTION IDENTIFIER ( ) {
+Rule 25    expr -> IDENTIFIER ( )
+Rule 26    expr -> PARAM expr
+Rule 27    expr -> ARGV
+Rule 28    expr -> ARGC
+Rule 29    expr -> expr ARRAY
+Rule 30    expr -> ARRAY
+Rule 31    expr -> FLOAT
+Rule 32    expr -> GLOBAL IDENTIFIER
+Rule 33    expr -> IDENTIFIER
+Rule 34    expr -> ( expr )
+Rule 35    expr -> - expr  [precedence=right, level=3]
+Rule 36    expr -> NUMBER
+Rule 37    expr -> STRING
+Rule 38    expr -> expr / expr  [precedence=left, level=2]
+Rule 39    expr -> expr * expr  [precedence=left, level=2]
+Rule 40    expr -> expr ^ expr
+Rule 41    expr -> expr % expr
+Rule 42    expr -> expr - expr  [precedence=left, level=1]
+Rule 43    expr -> expr + expr  [precedence=left, level=1]
+Rule 44    expr -> TYPEOF expr
+Rule 45    condition -> expr < expr
+Rule 46    condition -> expr NOTEQ expr
+Rule 47    condition -> expr EQSTHAN expr
+Rule 48    condition -> expr EQGTHAN expr
+Rule 49    condition -> expr > expr
+Rule 50    condition -> expr EQEQ expr
+Rule 51    condition -> FALSE
+Rule 52    condition -> TRUE
+Rule 53    var_assign -> GLOBAL IDENTIFIER = condition
+Rule 54    var_assign -> GLOBAL IDENTIFIER = expr
+Rule 55    var_assign -> IDENTIFIER = condition
+Rule 56    var_assign -> IDENTIFIER = expr
 
 Terminals, with rules where they appear:
 
-%                    : 39
-(                    : 4 6 9 16 22 23 32
-)                    : 4 6 9 16 22 23 32
-*                    : 37
-+                    : 7 7 41
--                    : 33 40
-/                    : 36
+%                    : 41
+(                    : 4 6 9 16 24 25 34
+)                    : 4 6 9 16 24 25 34
+*                    : 39
++                    : 7 7 43
+-                    : 35 42
+/                    : 38
 :                    : 16
-<                    : 43
-=                    : 14 51 52 53 54
->                    : 47
-ARGC                 : 26
-ARGV                 : 25
-ARRAY                : 14 27 28
+<                    : 45
+=                    : 14 53 54 55 56
+>                    : 49
+ARGC                 : 28
+ARGV                 : 27
+ARRAY                : 14 29 30
 ARROWOP              : 8 9 10
 ELSE                 : 5
 END                  : 15
-EQEQ                 : 48
-EQGTHAN              : 46
-EQSTHAN              : 45
-FALSE                : 49
-FLOAT                : 29
+EQEQ                 : 50
+EQGTHAN              : 48
+EQSTHAN              : 47
+EXCEPT               : 18
+FALSE                : 51
+FLOAT                : 31
 FOR                  : 3
-FUNCTION             : 22
-GLOBAL               : 8 17 30 51 52
-IDENTIFIER           : 3 7 8 9 10 14 16 16 17 22 23 30 31 51 52 53 54
+FUNCTION             : 24
+GLOBAL               : 8 17 32 53 54
+IDENTIFIER           : 3 7 8 9 10 14 16 16 17 24 25 32 33 53 54 55 56
 IF                   : 6
 IN                   : 3
-INCLUDE              : 19
+INCLUDE              : 21
 MACRO                : 16 17
-NOTEQ                : 44
-NUMBER               : 34
-PARAM                : 24
-RETURN               : 20 21
-STRING               : 19 35
-TRUE                 : 50
-TYPEOF               : 42
+NOTEQ                : 46
+NUMBER               : 36
+PARAM                : 26
+RETURN               : 22 23
+STRING               : 21 37
+TRUE                 : 52
+TRY                  : 19
+TYPEOF               : 44
 WHILE                : 4
 WRITE                : 11 12
-^                    : 38
+^                    : 40
 error                : 
-{                    : 3 4 5 6 16 17 22
-}                    : 15 18
+{                    : 3 4 5 6 16 17 18 19 24
+}                    : 15 20
 
 Nonterminals, with rules where they appear:
 
-condition            : 2 4 6 11 20 51 53
-expr                 : 3 9 12 13 14 21 24 27 32 33 36 36 37 37 38 38 39 39 40 40 41 41 42 43 43 44 44 45 45 46 46 47 47 48 48 52 54
+condition            : 2 4 6 11 22 53 55
+expr                 : 3 9 12 13 14 23 26 29 34 35 38 38 39 39 40 40 41 41 42 42 43 43 44 45 45 46 46 47 47 48 48 49 49 50 50 54 56
 statement            : 0
 var_assign           : 1
 
@@ -130,43 +134,45 @@ state 0
     (15) statement -> . } END
     (16) statement -> . MACRO IDENTIFIER : IDENTIFIER ( ) {
     (17) statement -> . GLOBAL MACRO IDENTIFIER {
-    (18) statement -> . }
-    (19) statement -> . INCLUDE STRING
-    (20) statement -> . RETURN condition
-    (21) statement -> . RETURN expr
-    (22) statement -> . FUNCTION IDENTIFIER ( ) {
-    (51) var_assign -> . GLOBAL IDENTIFIER = condition
-    (52) var_assign -> . GLOBAL IDENTIFIER = expr
-    (53) var_assign -> . IDENTIFIER = condition
-    (54) var_assign -> . IDENTIFIER = expr
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
+    (18) statement -> . EXCEPT {
+    (19) statement -> . TRY {
+    (20) statement -> . }
+    (21) statement -> . INCLUDE STRING
+    (22) statement -> . RETURN condition
+    (23) statement -> . RETURN expr
+    (24) statement -> . FUNCTION IDENTIFIER ( ) {
+    (53) var_assign -> . GLOBAL IDENTIFIER = condition
+    (54) var_assign -> . GLOBAL IDENTIFIER = expr
+    (55) var_assign -> . IDENTIFIER = condition
+    (56) var_assign -> . IDENTIFIER = expr
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
     FOR             shift and go to state 4
     WHILE           shift and go to state 7
     ELSE            shift and go to state 9
@@ -177,21 +183,23 @@ state 0
     }               shift and go to state 15
     MACRO           shift and go to state 16
     GLOBAL          shift and go to state 12
-    INCLUDE         shift and go to state 17
-    RETURN          shift and go to state 19
-    FUNCTION        shift and go to state 20
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    EXCEPT          shift and go to state 17
+    TRY             shift and go to state 18
+    INCLUDE         shift and go to state 19
+    RETURN          shift and go to state 21
+    FUNCTION        shift and go to state 22
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
+    FLOAT           shift and go to state 28
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     statement                      shift and go to state 1
     var_assign                     shift and go to state 2
@@ -218,1460 +226,1419 @@ state 3
 state 4
 
     (3) statement -> FOR . IDENTIFIER IN expr {
-    IDENTIFIER      shift and go to state 30
+    IDENTIFIER      shift and go to state 32
 
 
 state 5
 
     (7) statement -> IDENTIFIER . + +
     (14) statement -> IDENTIFIER . ARRAY = expr
-    (53) var_assign -> IDENTIFIER . = condition
-    (54) var_assign -> IDENTIFIER . = expr
-    (23) expr -> IDENTIFIER . ( )
-    (31) expr -> IDENTIFIER .
+    (55) var_assign -> IDENTIFIER . = condition
+    (56) var_assign -> IDENTIFIER . = expr
+    (25) expr -> IDENTIFIER . ( )
+    (33) expr -> IDENTIFIER .
   ! shift/reduce conflict for ARRAY resolved as shift
   ! shift/reduce conflict for + resolved as shift
-    +               shift and go to state 31
-    ARRAY           shift and go to state 32
-    =               shift and go to state 33
-    (               shift and go to state 34
-    ARROWOP         reduce using rule 31 (expr -> IDENTIFIER .)
-    <               reduce using rule 31 (expr -> IDENTIFIER .)
-    NOTEQ           reduce using rule 31 (expr -> IDENTIFIER .)
-    EQSTHAN         reduce using rule 31 (expr -> IDENTIFIER .)
-    EQGTHAN         reduce using rule 31 (expr -> IDENTIFIER .)
-    >               reduce using rule 31 (expr -> IDENTIFIER .)
-    EQEQ            reduce using rule 31 (expr -> IDENTIFIER .)
-    /               reduce using rule 31 (expr -> IDENTIFIER .)
-    *               reduce using rule 31 (expr -> IDENTIFIER .)
-    ^               reduce using rule 31 (expr -> IDENTIFIER .)
-    %               reduce using rule 31 (expr -> IDENTIFIER .)
-    -               reduce using rule 31 (expr -> IDENTIFIER .)
-    $end            reduce using rule 31 (expr -> IDENTIFIER .)
+    +               shift and go to state 33
+    ARRAY           shift and go to state 34
+    =               shift and go to state 35
+    (               shift and go to state 36
+    ARROWOP         reduce using rule 33 (expr -> IDENTIFIER .)
+    <               reduce using rule 33 (expr -> IDENTIFIER .)
+    NOTEQ           reduce using rule 33 (expr -> IDENTIFIER .)
+    EQSTHAN         reduce using rule 33 (expr -> IDENTIFIER .)
+    EQGTHAN         reduce using rule 33 (expr -> IDENTIFIER .)
+    >               reduce using rule 33 (expr -> IDENTIFIER .)
+    EQEQ            reduce using rule 33 (expr -> IDENTIFIER .)
+    /               reduce using rule 33 (expr -> IDENTIFIER .)
+    *               reduce using rule 33 (expr -> IDENTIFIER .)
+    ^               reduce using rule 33 (expr -> IDENTIFIER .)
+    %               reduce using rule 33 (expr -> IDENTIFIER .)
+    -               reduce using rule 33 (expr -> IDENTIFIER .)
+    $end            reduce using rule 33 (expr -> IDENTIFIER .)
 
 
 state 6
 
     (9) statement -> expr . ARROWOP IDENTIFIER ( )
     (13) statement -> expr .
-    (43) condition -> expr . < expr
-    (44) condition -> expr . NOTEQ expr
-    (45) condition -> expr . EQSTHAN expr
-    (46) condition -> expr . EQGTHAN expr
-    (47) condition -> expr . > expr
-    (48) condition -> expr . EQEQ expr
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    ARROWOP         shift and go to state 35
+    (45) condition -> expr . < expr
+    (46) condition -> expr . NOTEQ expr
+    (47) condition -> expr . EQSTHAN expr
+    (48) condition -> expr . EQGTHAN expr
+    (49) condition -> expr . > expr
+    (50) condition -> expr . EQEQ expr
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    ARROWOP         shift and go to state 37
     $end            reduce using rule 13 (statement -> expr .)
-    <               shift and go to state 36
-    NOTEQ           shift and go to state 37
-    EQSTHAN         shift and go to state 38
-    EQGTHAN         shift and go to state 39
-    >               shift and go to state 40
-    EQEQ            shift and go to state 41
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    <               shift and go to state 38
+    NOTEQ           shift and go to state 39
+    EQSTHAN         shift and go to state 40
+    EQGTHAN         shift and go to state 41
+    >               shift and go to state 42
+    EQEQ            shift and go to state 43
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 7
 
     (4) statement -> WHILE . ( condition ) {
-    (               shift and go to state 49
+    (               shift and go to state 51
 
 
 state 8
 
-    (32) expr -> ( . expr )
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (34) expr -> ( . expr )
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
-    expr                           shift and go to state 50
+    expr                           shift and go to state 52
 
 state 9
 
     (5) statement -> ELSE . {
-    {               shift and go to state 53
+    {               shift and go to state 55
 
 
 state 10
 
     (6) statement -> IF . ( condition ) {
-    (               shift and go to state 54
+    (               shift and go to state 56
 
 
 state 11
 
     (8) statement -> ARROWOP . GLOBAL IDENTIFIER
     (10) statement -> ARROWOP . IDENTIFIER
-    GLOBAL          shift and go to state 55
-    IDENTIFIER      shift and go to state 56
+    GLOBAL          shift and go to state 57
+    IDENTIFIER      shift and go to state 58
 
 
 state 12
 
     (17) statement -> GLOBAL . MACRO IDENTIFIER {
-    (51) var_assign -> GLOBAL . IDENTIFIER = condition
-    (52) var_assign -> GLOBAL . IDENTIFIER = expr
-    (30) expr -> GLOBAL . IDENTIFIER
-    MACRO           shift and go to state 57
-    IDENTIFIER      shift and go to state 58
+    (53) var_assign -> GLOBAL . IDENTIFIER = condition
+    (54) var_assign -> GLOBAL . IDENTIFIER = expr
+    (32) expr -> GLOBAL . IDENTIFIER
+    MACRO           shift and go to state 59
+    IDENTIFIER      shift and go to state 60
 
 
 state 13
 
     (11) statement -> WRITE . condition
     (12) statement -> WRITE . expr
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
-    condition                      shift and go to state 59
-    expr                           shift and go to state 60
+    condition                      shift and go to state 61
+    expr                           shift and go to state 62
 
 state 14
 
-    (28) expr -> ARRAY .
-    ARROWOP         reduce using rule 28 (expr -> ARRAY .)
-    <               reduce using rule 28 (expr -> ARRAY .)
-    NOTEQ           reduce using rule 28 (expr -> ARRAY .)
-    EQSTHAN         reduce using rule 28 (expr -> ARRAY .)
-    EQGTHAN         reduce using rule 28 (expr -> ARRAY .)
-    >               reduce using rule 28 (expr -> ARRAY .)
-    EQEQ            reduce using rule 28 (expr -> ARRAY .)
-    ARRAY           reduce using rule 28 (expr -> ARRAY .)
-    /               reduce using rule 28 (expr -> ARRAY .)
-    *               reduce using rule 28 (expr -> ARRAY .)
-    ^               reduce using rule 28 (expr -> ARRAY .)
-    %               reduce using rule 28 (expr -> ARRAY .)
-    -               reduce using rule 28 (expr -> ARRAY .)
-    +               reduce using rule 28 (expr -> ARRAY .)
-    $end            reduce using rule 28 (expr -> ARRAY .)
-    )               reduce using rule 28 (expr -> ARRAY .)
-    {               reduce using rule 28 (expr -> ARRAY .)
+    (30) expr -> ARRAY .
+    ARROWOP         reduce using rule 30 (expr -> ARRAY .)
+    <               reduce using rule 30 (expr -> ARRAY .)
+    NOTEQ           reduce using rule 30 (expr -> ARRAY .)
+    EQSTHAN         reduce using rule 30 (expr -> ARRAY .)
+    EQGTHAN         reduce using rule 30 (expr -> ARRAY .)
+    >               reduce using rule 30 (expr -> ARRAY .)
+    EQEQ            reduce using rule 30 (expr -> ARRAY .)
+    ARRAY           reduce using rule 30 (expr -> ARRAY .)
+    /               reduce using rule 30 (expr -> ARRAY .)
+    *               reduce using rule 30 (expr -> ARRAY .)
+    ^               reduce using rule 30 (expr -> ARRAY .)
+    %               reduce using rule 30 (expr -> ARRAY .)
+    -               reduce using rule 30 (expr -> ARRAY .)
+    +               reduce using rule 30 (expr -> ARRAY .)
+    $end            reduce using rule 30 (expr -> ARRAY .)
+    )               reduce using rule 30 (expr -> ARRAY .)
+    {               reduce using rule 30 (expr -> ARRAY .)
 
 
 state 15
 
     (15) statement -> } . END
-    (18) statement -> } .
-    END             shift and go to state 61
-    $end            reduce using rule 18 (statement -> } .)
+    (20) statement -> } .
+    END             shift and go to state 63
+    $end            reduce using rule 20 (statement -> } .)
 
 
 state 16
 
     (16) statement -> MACRO . IDENTIFIER : IDENTIFIER ( ) {
-    IDENTIFIER      shift and go to state 62
+    IDENTIFIER      shift and go to state 64
 
 
 state 17
 
-    (19) statement -> INCLUDE . STRING
-    STRING          shift and go to state 63
+    (18) statement -> EXCEPT . {
+    {               shift and go to state 65
 
 
 state 18
 
-    (35) expr -> STRING .
-    ARROWOP         reduce using rule 35 (expr -> STRING .)
-    <               reduce using rule 35 (expr -> STRING .)
-    NOTEQ           reduce using rule 35 (expr -> STRING .)
-    EQSTHAN         reduce using rule 35 (expr -> STRING .)
-    EQGTHAN         reduce using rule 35 (expr -> STRING .)
-    >               reduce using rule 35 (expr -> STRING .)
-    EQEQ            reduce using rule 35 (expr -> STRING .)
-    ARRAY           reduce using rule 35 (expr -> STRING .)
-    /               reduce using rule 35 (expr -> STRING .)
-    *               reduce using rule 35 (expr -> STRING .)
-    ^               reduce using rule 35 (expr -> STRING .)
-    %               reduce using rule 35 (expr -> STRING .)
-    -               reduce using rule 35 (expr -> STRING .)
-    +               reduce using rule 35 (expr -> STRING .)
-    $end            reduce using rule 35 (expr -> STRING .)
-    )               reduce using rule 35 (expr -> STRING .)
-    {               reduce using rule 35 (expr -> STRING .)
+    (19) statement -> TRY . {
+    {               shift and go to state 66
 
 
 state 19
 
-    (20) statement -> RETURN . condition
-    (21) statement -> RETURN . expr
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    (21) statement -> INCLUDE . STRING
+    STRING          shift and go to state 67
 
-    condition                      shift and go to state 64
-    expr                           shift and go to state 65
 
 state 20
 
-    (22) statement -> FUNCTION . IDENTIFIER ( ) {
-    IDENTIFIER      shift and go to state 66
+    (37) expr -> STRING .
+    ARROWOP         reduce using rule 37 (expr -> STRING .)
+    <               reduce using rule 37 (expr -> STRING .)
+    NOTEQ           reduce using rule 37 (expr -> STRING .)
+    EQSTHAN         reduce using rule 37 (expr -> STRING .)
+    EQGTHAN         reduce using rule 37 (expr -> STRING .)
+    >               reduce using rule 37 (expr -> STRING .)
+    EQEQ            reduce using rule 37 (expr -> STRING .)
+    ARRAY           reduce using rule 37 (expr -> STRING .)
+    /               reduce using rule 37 (expr -> STRING .)
+    *               reduce using rule 37 (expr -> STRING .)
+    ^               reduce using rule 37 (expr -> STRING .)
+    %               reduce using rule 37 (expr -> STRING .)
+    -               reduce using rule 37 (expr -> STRING .)
+    +               reduce using rule 37 (expr -> STRING .)
+    $end            reduce using rule 37 (expr -> STRING .)
+    )               reduce using rule 37 (expr -> STRING .)
+    {               reduce using rule 37 (expr -> STRING .)
 
 
 state 21
 
-    (49) condition -> FALSE .
-    $end            reduce using rule 49 (condition -> FALSE .)
-    )               reduce using rule 49 (condition -> FALSE .)
+    (22) statement -> RETURN . condition
+    (23) statement -> RETURN . expr
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    condition                      shift and go to state 68
+    expr                           shift and go to state 69
 
 state 22
 
-    (50) condition -> TRUE .
-    $end            reduce using rule 50 (condition -> TRUE .)
-    )               reduce using rule 50 (condition -> TRUE .)
+    (24) statement -> FUNCTION . IDENTIFIER ( ) {
+    IDENTIFIER      shift and go to state 70
 
 
 state 23
 
-    (24) expr -> PARAM . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    (51) condition -> FALSE .
+    $end            reduce using rule 51 (condition -> FALSE .)
+    )               reduce using rule 51 (condition -> FALSE .)
 
-    expr                           shift and go to state 67
 
 state 24
 
-    (25) expr -> ARGV .
-    ARROWOP         reduce using rule 25 (expr -> ARGV .)
-    <               reduce using rule 25 (expr -> ARGV .)
-    NOTEQ           reduce using rule 25 (expr -> ARGV .)
-    EQSTHAN         reduce using rule 25 (expr -> ARGV .)
-    EQGTHAN         reduce using rule 25 (expr -> ARGV .)
-    >               reduce using rule 25 (expr -> ARGV .)
-    EQEQ            reduce using rule 25 (expr -> ARGV .)
-    ARRAY           reduce using rule 25 (expr -> ARGV .)
-    /               reduce using rule 25 (expr -> ARGV .)
-    *               reduce using rule 25 (expr -> ARGV .)
-    ^               reduce using rule 25 (expr -> ARGV .)
-    %               reduce using rule 25 (expr -> ARGV .)
-    -               reduce using rule 25 (expr -> ARGV .)
-    +               reduce using rule 25 (expr -> ARGV .)
-    $end            reduce using rule 25 (expr -> ARGV .)
-    )               reduce using rule 25 (expr -> ARGV .)
-    {               reduce using rule 25 (expr -> ARGV .)
+    (52) condition -> TRUE .
+    $end            reduce using rule 52 (condition -> TRUE .)
+    )               reduce using rule 52 (condition -> TRUE .)
 
 
 state 25
 
-    (26) expr -> ARGC .
-    ARROWOP         reduce using rule 26 (expr -> ARGC .)
-    <               reduce using rule 26 (expr -> ARGC .)
-    NOTEQ           reduce using rule 26 (expr -> ARGC .)
-    EQSTHAN         reduce using rule 26 (expr -> ARGC .)
-    EQGTHAN         reduce using rule 26 (expr -> ARGC .)
-    >               reduce using rule 26 (expr -> ARGC .)
-    EQEQ            reduce using rule 26 (expr -> ARGC .)
-    ARRAY           reduce using rule 26 (expr -> ARGC .)
-    /               reduce using rule 26 (expr -> ARGC .)
-    *               reduce using rule 26 (expr -> ARGC .)
-    ^               reduce using rule 26 (expr -> ARGC .)
-    %               reduce using rule 26 (expr -> ARGC .)
-    -               reduce using rule 26 (expr -> ARGC .)
-    +               reduce using rule 26 (expr -> ARGC .)
-    $end            reduce using rule 26 (expr -> ARGC .)
-    )               reduce using rule 26 (expr -> ARGC .)
-    {               reduce using rule 26 (expr -> ARGC .)
+    (26) expr -> PARAM . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    expr                           shift and go to state 71
 
 state 26
 
-    (29) expr -> FLOAT .
-    ARROWOP         reduce using rule 29 (expr -> FLOAT .)
-    <               reduce using rule 29 (expr -> FLOAT .)
-    NOTEQ           reduce using rule 29 (expr -> FLOAT .)
-    EQSTHAN         reduce using rule 29 (expr -> FLOAT .)
-    EQGTHAN         reduce using rule 29 (expr -> FLOAT .)
-    >               reduce using rule 29 (expr -> FLOAT .)
-    EQEQ            reduce using rule 29 (expr -> FLOAT .)
-    ARRAY           reduce using rule 29 (expr -> FLOAT .)
-    /               reduce using rule 29 (expr -> FLOAT .)
-    *               reduce using rule 29 (expr -> FLOAT .)
-    ^               reduce using rule 29 (expr -> FLOAT .)
-    %               reduce using rule 29 (expr -> FLOAT .)
-    -               reduce using rule 29 (expr -> FLOAT .)
-    +               reduce using rule 29 (expr -> FLOAT .)
-    $end            reduce using rule 29 (expr -> FLOAT .)
-    )               reduce using rule 29 (expr -> FLOAT .)
-    {               reduce using rule 29 (expr -> FLOAT .)
+    (27) expr -> ARGV .
+    ARROWOP         reduce using rule 27 (expr -> ARGV .)
+    <               reduce using rule 27 (expr -> ARGV .)
+    NOTEQ           reduce using rule 27 (expr -> ARGV .)
+    EQSTHAN         reduce using rule 27 (expr -> ARGV .)
+    EQGTHAN         reduce using rule 27 (expr -> ARGV .)
+    >               reduce using rule 27 (expr -> ARGV .)
+    EQEQ            reduce using rule 27 (expr -> ARGV .)
+    ARRAY           reduce using rule 27 (expr -> ARGV .)
+    /               reduce using rule 27 (expr -> ARGV .)
+    *               reduce using rule 27 (expr -> ARGV .)
+    ^               reduce using rule 27 (expr -> ARGV .)
+    %               reduce using rule 27 (expr -> ARGV .)
+    -               reduce using rule 27 (expr -> ARGV .)
+    +               reduce using rule 27 (expr -> ARGV .)
+    $end            reduce using rule 27 (expr -> ARGV .)
+    )               reduce using rule 27 (expr -> ARGV .)
+    {               reduce using rule 27 (expr -> ARGV .)
 
 
 state 27
 
-    (33) expr -> - . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    (28) expr -> ARGC .
+    ARROWOP         reduce using rule 28 (expr -> ARGC .)
+    <               reduce using rule 28 (expr -> ARGC .)
+    NOTEQ           reduce using rule 28 (expr -> ARGC .)
+    EQSTHAN         reduce using rule 28 (expr -> ARGC .)
+    EQGTHAN         reduce using rule 28 (expr -> ARGC .)
+    >               reduce using rule 28 (expr -> ARGC .)
+    EQEQ            reduce using rule 28 (expr -> ARGC .)
+    ARRAY           reduce using rule 28 (expr -> ARGC .)
+    /               reduce using rule 28 (expr -> ARGC .)
+    *               reduce using rule 28 (expr -> ARGC .)
+    ^               reduce using rule 28 (expr -> ARGC .)
+    %               reduce using rule 28 (expr -> ARGC .)
+    -               reduce using rule 28 (expr -> ARGC .)
+    +               reduce using rule 28 (expr -> ARGC .)
+    $end            reduce using rule 28 (expr -> ARGC .)
+    )               reduce using rule 28 (expr -> ARGC .)
+    {               reduce using rule 28 (expr -> ARGC .)
 
-    expr                           shift and go to state 68
 
 state 28
 
-    (34) expr -> NUMBER .
-    ARROWOP         reduce using rule 34 (expr -> NUMBER .)
-    <               reduce using rule 34 (expr -> NUMBER .)
-    NOTEQ           reduce using rule 34 (expr -> NUMBER .)
-    EQSTHAN         reduce using rule 34 (expr -> NUMBER .)
-    EQGTHAN         reduce using rule 34 (expr -> NUMBER .)
-    >               reduce using rule 34 (expr -> NUMBER .)
-    EQEQ            reduce using rule 34 (expr -> NUMBER .)
-    ARRAY           reduce using rule 34 (expr -> NUMBER .)
-    /               reduce using rule 34 (expr -> NUMBER .)
-    *               reduce using rule 34 (expr -> NUMBER .)
-    ^               reduce using rule 34 (expr -> NUMBER .)
-    %               reduce using rule 34 (expr -> NUMBER .)
-    -               reduce using rule 34 (expr -> NUMBER .)
-    +               reduce using rule 34 (expr -> NUMBER .)
-    $end            reduce using rule 34 (expr -> NUMBER .)
-    )               reduce using rule 34 (expr -> NUMBER .)
-    {               reduce using rule 34 (expr -> NUMBER .)
+    (31) expr -> FLOAT .
+    ARROWOP         reduce using rule 31 (expr -> FLOAT .)
+    <               reduce using rule 31 (expr -> FLOAT .)
+    NOTEQ           reduce using rule 31 (expr -> FLOAT .)
+    EQSTHAN         reduce using rule 31 (expr -> FLOAT .)
+    EQGTHAN         reduce using rule 31 (expr -> FLOAT .)
+    >               reduce using rule 31 (expr -> FLOAT .)
+    EQEQ            reduce using rule 31 (expr -> FLOAT .)
+    ARRAY           reduce using rule 31 (expr -> FLOAT .)
+    /               reduce using rule 31 (expr -> FLOAT .)
+    *               reduce using rule 31 (expr -> FLOAT .)
+    ^               reduce using rule 31 (expr -> FLOAT .)
+    %               reduce using rule 31 (expr -> FLOAT .)
+    -               reduce using rule 31 (expr -> FLOAT .)
+    +               reduce using rule 31 (expr -> FLOAT .)
+    $end            reduce using rule 31 (expr -> FLOAT .)
+    )               reduce using rule 31 (expr -> FLOAT .)
+    {               reduce using rule 31 (expr -> FLOAT .)
 
 
 state 29
 
-    (42) expr -> TYPEOF . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (35) expr -> - . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
-    expr                           shift and go to state 69
+    expr                           shift and go to state 72
 
 state 30
 
-    (3) statement -> FOR IDENTIFIER . IN expr {
-    IN              shift and go to state 70
+    (36) expr -> NUMBER .
+    ARROWOP         reduce using rule 36 (expr -> NUMBER .)
+    <               reduce using rule 36 (expr -> NUMBER .)
+    NOTEQ           reduce using rule 36 (expr -> NUMBER .)
+    EQSTHAN         reduce using rule 36 (expr -> NUMBER .)
+    EQGTHAN         reduce using rule 36 (expr -> NUMBER .)
+    >               reduce using rule 36 (expr -> NUMBER .)
+    EQEQ            reduce using rule 36 (expr -> NUMBER .)
+    ARRAY           reduce using rule 36 (expr -> NUMBER .)
+    /               reduce using rule 36 (expr -> NUMBER .)
+    *               reduce using rule 36 (expr -> NUMBER .)
+    ^               reduce using rule 36 (expr -> NUMBER .)
+    %               reduce using rule 36 (expr -> NUMBER .)
+    -               reduce using rule 36 (expr -> NUMBER .)
+    +               reduce using rule 36 (expr -> NUMBER .)
+    $end            reduce using rule 36 (expr -> NUMBER .)
+    )               reduce using rule 36 (expr -> NUMBER .)
+    {               reduce using rule 36 (expr -> NUMBER .)
 
 
 state 31
 
-    (7) statement -> IDENTIFIER + . +
-    +               shift and go to state 71
+    (44) expr -> TYPEOF . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    expr                           shift and go to state 73
 
 state 32
 
-    (14) statement -> IDENTIFIER ARRAY . = expr
-    =               shift and go to state 72
+    (3) statement -> FOR IDENTIFIER . IN expr {
+    IN              shift and go to state 74
 
 
 state 33
 
-    (53) var_assign -> IDENTIFIER = . condition
-    (54) var_assign -> IDENTIFIER = . expr
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    (7) statement -> IDENTIFIER + . +
+    +               shift and go to state 75
 
-    condition                      shift and go to state 73
-    expr                           shift and go to state 74
 
 state 34
 
-    (23) expr -> IDENTIFIER ( . )
-    )               shift and go to state 75
+    (14) statement -> IDENTIFIER ARRAY . = expr
+    =               shift and go to state 76
 
 
 state 35
 
-    (9) statement -> expr ARROWOP . IDENTIFIER ( )
-    IDENTIFIER      shift and go to state 76
+    (55) var_assign -> IDENTIFIER = . condition
+    (56) var_assign -> IDENTIFIER = . expr
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    condition                      shift and go to state 77
+    expr                           shift and go to state 78
 
 state 36
 
-    (43) condition -> expr < . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    (25) expr -> IDENTIFIER ( . )
+    )               shift and go to state 79
 
-    expr                           shift and go to state 77
 
 state 37
 
-    (44) condition -> expr NOTEQ . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    (9) statement -> expr ARROWOP . IDENTIFIER ( )
+    IDENTIFIER      shift and go to state 80
 
-    expr                           shift and go to state 78
 
 state 38
 
-    (45) condition -> expr EQSTHAN . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (45) condition -> expr < . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
-
-    expr                           shift and go to state 79
-
-state 39
-
-    (46) condition -> expr EQGTHAN . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
-
-    expr                           shift and go to state 80
-
-state 40
-
-    (47) condition -> expr > . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 81
 
-state 41
+state 39
 
-    (48) condition -> expr EQEQ . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (46) condition -> expr NOTEQ . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 82
 
-state 42
+state 40
 
-    (27) expr -> expr ARRAY .
-    ARROWOP         reduce using rule 27 (expr -> expr ARRAY .)
-    <               reduce using rule 27 (expr -> expr ARRAY .)
-    NOTEQ           reduce using rule 27 (expr -> expr ARRAY .)
-    EQSTHAN         reduce using rule 27 (expr -> expr ARRAY .)
-    EQGTHAN         reduce using rule 27 (expr -> expr ARRAY .)
-    >               reduce using rule 27 (expr -> expr ARRAY .)
-    EQEQ            reduce using rule 27 (expr -> expr ARRAY .)
-    ARRAY           reduce using rule 27 (expr -> expr ARRAY .)
-    /               reduce using rule 27 (expr -> expr ARRAY .)
-    *               reduce using rule 27 (expr -> expr ARRAY .)
-    ^               reduce using rule 27 (expr -> expr ARRAY .)
-    %               reduce using rule 27 (expr -> expr ARRAY .)
-    -               reduce using rule 27 (expr -> expr ARRAY .)
-    +               reduce using rule 27 (expr -> expr ARRAY .)
-    $end            reduce using rule 27 (expr -> expr ARRAY .)
-    )               reduce using rule 27 (expr -> expr ARRAY .)
-    {               reduce using rule 27 (expr -> expr ARRAY .)
-
-
-state 43
-
-    (36) expr -> expr / . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (47) condition -> expr EQSTHAN . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 83
 
-state 44
+state 41
 
-    (37) expr -> expr * . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (48) condition -> expr EQGTHAN . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 84
 
-state 45
+state 42
 
-    (38) expr -> expr ^ . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (49) condition -> expr > . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 85
 
-state 46
+state 43
 
-    (39) expr -> expr % . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (50) condition -> expr EQEQ . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 86
 
-state 47
+state 44
 
-    (40) expr -> expr - . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (29) expr -> expr ARRAY .
+    ARROWOP         reduce using rule 29 (expr -> expr ARRAY .)
+    <               reduce using rule 29 (expr -> expr ARRAY .)
+    NOTEQ           reduce using rule 29 (expr -> expr ARRAY .)
+    EQSTHAN         reduce using rule 29 (expr -> expr ARRAY .)
+    EQGTHAN         reduce using rule 29 (expr -> expr ARRAY .)
+    >               reduce using rule 29 (expr -> expr ARRAY .)
+    EQEQ            reduce using rule 29 (expr -> expr ARRAY .)
+    ARRAY           reduce using rule 29 (expr -> expr ARRAY .)
+    /               reduce using rule 29 (expr -> expr ARRAY .)
+    *               reduce using rule 29 (expr -> expr ARRAY .)
+    ^               reduce using rule 29 (expr -> expr ARRAY .)
+    %               reduce using rule 29 (expr -> expr ARRAY .)
+    -               reduce using rule 29 (expr -> expr ARRAY .)
+    +               reduce using rule 29 (expr -> expr ARRAY .)
+    $end            reduce using rule 29 (expr -> expr ARRAY .)
+    )               reduce using rule 29 (expr -> expr ARRAY .)
+    {               reduce using rule 29 (expr -> expr ARRAY .)
+
+
+state 45
+
+    (38) expr -> expr / . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 87
 
-state 48
+state 46
 
-    (41) expr -> expr + . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (39) expr -> expr * . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
     expr                           shift and go to state 88
 
+state 47
+
+    (40) expr -> expr ^ . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
+
+    expr                           shift and go to state 89
+
+state 48
+
+    (41) expr -> expr % . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
+
+    expr                           shift and go to state 90
+
 state 49
 
-    (4) statement -> WHILE ( . condition ) {
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (42) expr -> expr - . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
-    condition                      shift and go to state 89
-    expr                           shift and go to state 90
+    expr                           shift and go to state 91
 
 state 50
 
-    (32) expr -> ( expr . )
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    )               shift and go to state 91
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (43) expr -> expr + . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    expr                           shift and go to state 92
 
 state 51
 
-    (23) expr -> IDENTIFIER . ( )
-    (31) expr -> IDENTIFIER .
-    (               shift and go to state 34
-    )               reduce using rule 31 (expr -> IDENTIFIER .)
-    ARRAY           reduce using rule 31 (expr -> IDENTIFIER .)
-    /               reduce using rule 31 (expr -> IDENTIFIER .)
-    *               reduce using rule 31 (expr -> IDENTIFIER .)
-    ^               reduce using rule 31 (expr -> IDENTIFIER .)
-    %               reduce using rule 31 (expr -> IDENTIFIER .)
-    -               reduce using rule 31 (expr -> IDENTIFIER .)
-    +               reduce using rule 31 (expr -> IDENTIFIER .)
-    <               reduce using rule 31 (expr -> IDENTIFIER .)
-    NOTEQ           reduce using rule 31 (expr -> IDENTIFIER .)
-    EQSTHAN         reduce using rule 31 (expr -> IDENTIFIER .)
-    EQGTHAN         reduce using rule 31 (expr -> IDENTIFIER .)
-    >               reduce using rule 31 (expr -> IDENTIFIER .)
-    EQEQ            reduce using rule 31 (expr -> IDENTIFIER .)
-    $end            reduce using rule 31 (expr -> IDENTIFIER .)
-    ARROWOP         reduce using rule 31 (expr -> IDENTIFIER .)
-    {               reduce using rule 31 (expr -> IDENTIFIER .)
+    (4) statement -> WHILE ( . condition ) {
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    condition                      shift and go to state 93
+    expr                           shift and go to state 94
 
 state 52
 
-    (30) expr -> GLOBAL . IDENTIFIER
-    IDENTIFIER      shift and go to state 92
+    (34) expr -> ( expr . )
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    )               shift and go to state 95
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 53
+
+    (25) expr -> IDENTIFIER . ( )
+    (33) expr -> IDENTIFIER .
+    (               shift and go to state 36
+    )               reduce using rule 33 (expr -> IDENTIFIER .)
+    ARRAY           reduce using rule 33 (expr -> IDENTIFIER .)
+    /               reduce using rule 33 (expr -> IDENTIFIER .)
+    *               reduce using rule 33 (expr -> IDENTIFIER .)
+    ^               reduce using rule 33 (expr -> IDENTIFIER .)
+    %               reduce using rule 33 (expr -> IDENTIFIER .)
+    -               reduce using rule 33 (expr -> IDENTIFIER .)
+    +               reduce using rule 33 (expr -> IDENTIFIER .)
+    <               reduce using rule 33 (expr -> IDENTIFIER .)
+    NOTEQ           reduce using rule 33 (expr -> IDENTIFIER .)
+    EQSTHAN         reduce using rule 33 (expr -> IDENTIFIER .)
+    EQGTHAN         reduce using rule 33 (expr -> IDENTIFIER .)
+    >               reduce using rule 33 (expr -> IDENTIFIER .)
+    EQEQ            reduce using rule 33 (expr -> IDENTIFIER .)
+    $end            reduce using rule 33 (expr -> IDENTIFIER .)
+    ARROWOP         reduce using rule 33 (expr -> IDENTIFIER .)
+    {               reduce using rule 33 (expr -> IDENTIFIER .)
+
+
+state 54
+
+    (32) expr -> GLOBAL . IDENTIFIER
+    IDENTIFIER      shift and go to state 96
+
+
+state 55
 
     (5) statement -> ELSE { .
     $end            reduce using rule 5 (statement -> ELSE { .)
 
 
-state 54
+state 56
 
     (6) statement -> IF ( . condition ) {
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
-    condition                      shift and go to state 93
-    expr                           shift and go to state 90
+    condition                      shift and go to state 97
+    expr                           shift and go to state 94
 
-state 55
+state 57
 
     (8) statement -> ARROWOP GLOBAL . IDENTIFIER
-    IDENTIFIER      shift and go to state 94
+    IDENTIFIER      shift and go to state 98
 
 
-state 56
+state 58
 
     (10) statement -> ARROWOP IDENTIFIER .
     $end            reduce using rule 10 (statement -> ARROWOP IDENTIFIER .)
 
 
-state 57
+state 59
 
     (17) statement -> GLOBAL MACRO . IDENTIFIER {
-    IDENTIFIER      shift and go to state 95
+    IDENTIFIER      shift and go to state 99
 
 
-state 58
+state 60
 
-    (51) var_assign -> GLOBAL IDENTIFIER . = condition
-    (52) var_assign -> GLOBAL IDENTIFIER . = expr
-    (30) expr -> GLOBAL IDENTIFIER .
-    =               shift and go to state 96
-    ARROWOP         reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    <               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    NOTEQ           reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    EQSTHAN         reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    EQGTHAN         reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    >               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    EQEQ            reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    ARRAY           reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    /               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    *               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    ^               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    %               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    -               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    +               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    $end            reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
+    (53) var_assign -> GLOBAL IDENTIFIER . = condition
+    (54) var_assign -> GLOBAL IDENTIFIER . = expr
+    (32) expr -> GLOBAL IDENTIFIER .
+    =               shift and go to state 100
+    ARROWOP         reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    <               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    NOTEQ           reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    EQSTHAN         reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    EQGTHAN         reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    >               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    EQEQ            reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    ARRAY           reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    /               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    *               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    ^               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    %               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    -               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    +               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    $end            reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
 
 
-state 59
+state 61
 
     (11) statement -> WRITE condition .
     $end            reduce using rule 11 (statement -> WRITE condition .)
 
 
-state 60
+state 62
 
     (12) statement -> WRITE expr .
-    (43) condition -> expr . < expr
-    (44) condition -> expr . NOTEQ expr
-    (45) condition -> expr . EQSTHAN expr
-    (46) condition -> expr . EQGTHAN expr
-    (47) condition -> expr . > expr
-    (48) condition -> expr . EQEQ expr
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
+    (45) condition -> expr . < expr
+    (46) condition -> expr . NOTEQ expr
+    (47) condition -> expr . EQSTHAN expr
+    (48) condition -> expr . EQGTHAN expr
+    (49) condition -> expr . > expr
+    (50) condition -> expr . EQEQ expr
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
     $end            reduce using rule 12 (statement -> WRITE expr .)
-    <               shift and go to state 36
-    NOTEQ           shift and go to state 37
-    EQSTHAN         shift and go to state 38
-    EQGTHAN         shift and go to state 39
-    >               shift and go to state 40
-    EQEQ            shift and go to state 41
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    <               shift and go to state 38
+    NOTEQ           shift and go to state 39
+    EQSTHAN         shift and go to state 40
+    EQGTHAN         shift and go to state 41
+    >               shift and go to state 42
+    EQEQ            shift and go to state 43
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
-state 61
+state 63
 
     (15) statement -> } END .
     $end            reduce using rule 15 (statement -> } END .)
 
 
-state 62
-
-    (16) statement -> MACRO IDENTIFIER . : IDENTIFIER ( ) {
-    :               shift and go to state 97
-
-
-state 63
-
-    (19) statement -> INCLUDE STRING .
-    $end            reduce using rule 19 (statement -> INCLUDE STRING .)
-
-
 state 64
 
-    (20) statement -> RETURN condition .
-    $end            reduce using rule 20 (statement -> RETURN condition .)
+    (16) statement -> MACRO IDENTIFIER . : IDENTIFIER ( ) {
+    :               shift and go to state 101
 
 
 state 65
 
-    (21) statement -> RETURN expr .
-    (43) condition -> expr . < expr
-    (44) condition -> expr . NOTEQ expr
-    (45) condition -> expr . EQSTHAN expr
-    (46) condition -> expr . EQGTHAN expr
-    (47) condition -> expr . > expr
-    (48) condition -> expr . EQEQ expr
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 21 (statement -> RETURN expr .)
-    <               shift and go to state 36
-    NOTEQ           shift and go to state 37
-    EQSTHAN         shift and go to state 38
-    EQGTHAN         shift and go to state 39
-    >               shift and go to state 40
-    EQEQ            shift and go to state 41
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (18) statement -> EXCEPT { .
+    $end            reduce using rule 18 (statement -> EXCEPT { .)
 
 
 state 66
 
-    (22) statement -> FUNCTION IDENTIFIER . ( ) {
-    (               shift and go to state 98
+    (19) statement -> TRY { .
+    $end            reduce using rule 19 (statement -> TRY { .)
 
 
 state 67
 
-    (24) expr -> PARAM expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-  ! shift/reduce conflict for ARRAY resolved as shift
-  ! shift/reduce conflict for / resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for ^ resolved as shift
-  ! shift/reduce conflict for % resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for + resolved as shift
-    ARROWOP         reduce using rule 24 (expr -> PARAM expr .)
-    <               reduce using rule 24 (expr -> PARAM expr .)
-    NOTEQ           reduce using rule 24 (expr -> PARAM expr .)
-    EQSTHAN         reduce using rule 24 (expr -> PARAM expr .)
-    EQGTHAN         reduce using rule 24 (expr -> PARAM expr .)
-    >               reduce using rule 24 (expr -> PARAM expr .)
-    EQEQ            reduce using rule 24 (expr -> PARAM expr .)
-    $end            reduce using rule 24 (expr -> PARAM expr .)
-    )               reduce using rule 24 (expr -> PARAM expr .)
-    {               reduce using rule 24 (expr -> PARAM expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (21) statement -> INCLUDE STRING .
+    $end            reduce using rule 21 (statement -> INCLUDE STRING .)
 
 
 state 68
 
-    (33) expr -> - expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    ARROWOP         reduce using rule 33 (expr -> - expr .)
-    <               reduce using rule 33 (expr -> - expr .)
-    NOTEQ           reduce using rule 33 (expr -> - expr .)
-    EQSTHAN         reduce using rule 33 (expr -> - expr .)
-    EQGTHAN         reduce using rule 33 (expr -> - expr .)
-    >               reduce using rule 33 (expr -> - expr .)
-    EQEQ            reduce using rule 33 (expr -> - expr .)
-    ARRAY           reduce using rule 33 (expr -> - expr .)
-    /               reduce using rule 33 (expr -> - expr .)
-    *               reduce using rule 33 (expr -> - expr .)
-    ^               reduce using rule 33 (expr -> - expr .)
-    %               reduce using rule 33 (expr -> - expr .)
-    -               reduce using rule 33 (expr -> - expr .)
-    +               reduce using rule 33 (expr -> - expr .)
-    $end            reduce using rule 33 (expr -> - expr .)
-    )               reduce using rule 33 (expr -> - expr .)
-    {               reduce using rule 33 (expr -> - expr .)
+    (22) statement -> RETURN condition .
+    $end            reduce using rule 22 (statement -> RETURN condition .)
 
 
 state 69
 
-    (42) expr -> TYPEOF expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
+    (23) statement -> RETURN expr .
+    (45) condition -> expr . < expr
+    (46) condition -> expr . NOTEQ expr
+    (47) condition -> expr . EQSTHAN expr
+    (48) condition -> expr . EQGTHAN expr
+    (49) condition -> expr . > expr
+    (50) condition -> expr . EQEQ expr
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 23 (statement -> RETURN expr .)
+    <               shift and go to state 38
+    NOTEQ           shift and go to state 39
+    EQSTHAN         shift and go to state 40
+    EQGTHAN         shift and go to state 41
+    >               shift and go to state 42
+    EQEQ            shift and go to state 43
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
+
+
+state 70
+
+    (24) statement -> FUNCTION IDENTIFIER . ( ) {
+    (               shift and go to state 102
+
+
+state 71
+
+    (26) expr -> PARAM expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
   ! shift/reduce conflict for ARRAY resolved as shift
   ! shift/reduce conflict for / resolved as shift
   ! shift/reduce conflict for * resolved as shift
@@ -1679,403 +1646,432 @@ state 69
   ! shift/reduce conflict for % resolved as shift
   ! shift/reduce conflict for - resolved as shift
   ! shift/reduce conflict for + resolved as shift
-    ARROWOP         reduce using rule 42 (expr -> TYPEOF expr .)
-    <               reduce using rule 42 (expr -> TYPEOF expr .)
-    NOTEQ           reduce using rule 42 (expr -> TYPEOF expr .)
-    EQSTHAN         reduce using rule 42 (expr -> TYPEOF expr .)
-    EQGTHAN         reduce using rule 42 (expr -> TYPEOF expr .)
-    >               reduce using rule 42 (expr -> TYPEOF expr .)
-    EQEQ            reduce using rule 42 (expr -> TYPEOF expr .)
-    $end            reduce using rule 42 (expr -> TYPEOF expr .)
-    )               reduce using rule 42 (expr -> TYPEOF expr .)
-    {               reduce using rule 42 (expr -> TYPEOF expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    ARROWOP         reduce using rule 26 (expr -> PARAM expr .)
+    <               reduce using rule 26 (expr -> PARAM expr .)
+    NOTEQ           reduce using rule 26 (expr -> PARAM expr .)
+    EQSTHAN         reduce using rule 26 (expr -> PARAM expr .)
+    EQGTHAN         reduce using rule 26 (expr -> PARAM expr .)
+    >               reduce using rule 26 (expr -> PARAM expr .)
+    EQEQ            reduce using rule 26 (expr -> PARAM expr .)
+    $end            reduce using rule 26 (expr -> PARAM expr .)
+    )               reduce using rule 26 (expr -> PARAM expr .)
+    {               reduce using rule 26 (expr -> PARAM expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
-state 70
+state 72
+
+    (35) expr -> - expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    ARROWOP         reduce using rule 35 (expr -> - expr .)
+    <               reduce using rule 35 (expr -> - expr .)
+    NOTEQ           reduce using rule 35 (expr -> - expr .)
+    EQSTHAN         reduce using rule 35 (expr -> - expr .)
+    EQGTHAN         reduce using rule 35 (expr -> - expr .)
+    >               reduce using rule 35 (expr -> - expr .)
+    EQEQ            reduce using rule 35 (expr -> - expr .)
+    ARRAY           reduce using rule 35 (expr -> - expr .)
+    /               reduce using rule 35 (expr -> - expr .)
+    *               reduce using rule 35 (expr -> - expr .)
+    ^               reduce using rule 35 (expr -> - expr .)
+    %               reduce using rule 35 (expr -> - expr .)
+    -               reduce using rule 35 (expr -> - expr .)
+    +               reduce using rule 35 (expr -> - expr .)
+    $end            reduce using rule 35 (expr -> - expr .)
+    )               reduce using rule 35 (expr -> - expr .)
+    {               reduce using rule 35 (expr -> - expr .)
+
+
+state 73
+
+    (44) expr -> TYPEOF expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+  ! shift/reduce conflict for ARRAY resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for ^ resolved as shift
+  ! shift/reduce conflict for % resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for + resolved as shift
+    ARROWOP         reduce using rule 44 (expr -> TYPEOF expr .)
+    <               reduce using rule 44 (expr -> TYPEOF expr .)
+    NOTEQ           reduce using rule 44 (expr -> TYPEOF expr .)
+    EQSTHAN         reduce using rule 44 (expr -> TYPEOF expr .)
+    EQGTHAN         reduce using rule 44 (expr -> TYPEOF expr .)
+    >               reduce using rule 44 (expr -> TYPEOF expr .)
+    EQEQ            reduce using rule 44 (expr -> TYPEOF expr .)
+    $end            reduce using rule 44 (expr -> TYPEOF expr .)
+    )               reduce using rule 44 (expr -> TYPEOF expr .)
+    {               reduce using rule 44 (expr -> TYPEOF expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
+
+
+state 74
 
     (3) statement -> FOR IDENTIFIER IN . expr {
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
     ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
     (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
-    expr                           shift and go to state 99
+    expr                           shift and go to state 103
 
-state 71
+state 75
 
     (7) statement -> IDENTIFIER + + .
     $end            reduce using rule 7 (statement -> IDENTIFIER + + .)
 
 
-state 72
-
-    (14) statement -> IDENTIFIER ARRAY = . expr
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
-
-    expr                           shift and go to state 100
-
-state 73
-
-    (53) var_assign -> IDENTIFIER = condition .
-    $end            reduce using rule 53 (var_assign -> IDENTIFIER = condition .)
-
-
-state 74
-
-    (54) var_assign -> IDENTIFIER = expr .
-    (43) condition -> expr . < expr
-    (44) condition -> expr . NOTEQ expr
-    (45) condition -> expr . EQSTHAN expr
-    (46) condition -> expr . EQGTHAN expr
-    (47) condition -> expr . > expr
-    (48) condition -> expr . EQEQ expr
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 54 (var_assign -> IDENTIFIER = expr .)
-    <               shift and go to state 36
-    NOTEQ           shift and go to state 37
-    EQSTHAN         shift and go to state 38
-    EQGTHAN         shift and go to state 39
-    >               shift and go to state 40
-    EQEQ            shift and go to state 41
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
-
-
-state 75
-
-    (23) expr -> IDENTIFIER ( ) .
-    ARROWOP         reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    <               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    NOTEQ           reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    EQSTHAN         reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    EQGTHAN         reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    >               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    EQEQ            reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    ARRAY           reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    /               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    *               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    ^               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    %               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    -               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    +               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    $end            reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    )               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-    {               reduce using rule 23 (expr -> IDENTIFIER ( ) .)
-
-
 state 76
 
-    (9) statement -> expr ARROWOP IDENTIFIER . ( )
-    (               shift and go to state 101
+    (14) statement -> IDENTIFIER ARRAY = . expr
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    expr                           shift and go to state 104
 
 state 77
 
-    (43) condition -> expr < expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 43 (condition -> expr < expr .)
-    )               reduce using rule 43 (condition -> expr < expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (55) var_assign -> IDENTIFIER = condition .
+    $end            reduce using rule 55 (var_assign -> IDENTIFIER = condition .)
 
 
 state 78
 
-    (44) condition -> expr NOTEQ expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 44 (condition -> expr NOTEQ expr .)
-    )               reduce using rule 44 (condition -> expr NOTEQ expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (56) var_assign -> IDENTIFIER = expr .
+    (45) condition -> expr . < expr
+    (46) condition -> expr . NOTEQ expr
+    (47) condition -> expr . EQSTHAN expr
+    (48) condition -> expr . EQGTHAN expr
+    (49) condition -> expr . > expr
+    (50) condition -> expr . EQEQ expr
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 56 (var_assign -> IDENTIFIER = expr .)
+    <               shift and go to state 38
+    NOTEQ           shift and go to state 39
+    EQSTHAN         shift and go to state 40
+    EQGTHAN         shift and go to state 41
+    >               shift and go to state 42
+    EQEQ            shift and go to state 43
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 79
 
-    (45) condition -> expr EQSTHAN expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 45 (condition -> expr EQSTHAN expr .)
-    )               reduce using rule 45 (condition -> expr EQSTHAN expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (25) expr -> IDENTIFIER ( ) .
+    ARROWOP         reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    <               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    NOTEQ           reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    EQSTHAN         reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    EQGTHAN         reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    >               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    EQEQ            reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    ARRAY           reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    /               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    *               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    ^               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    %               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    -               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    +               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    $end            reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    )               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
+    {               reduce using rule 25 (expr -> IDENTIFIER ( ) .)
 
 
 state 80
 
-    (46) condition -> expr EQGTHAN expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 46 (condition -> expr EQGTHAN expr .)
-    )               reduce using rule 46 (condition -> expr EQGTHAN expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (9) statement -> expr ARROWOP IDENTIFIER . ( )
+    (               shift and go to state 105
 
 
 state 81
 
-    (47) condition -> expr > expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 47 (condition -> expr > expr .)
-    )               reduce using rule 47 (condition -> expr > expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (45) condition -> expr < expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 45 (condition -> expr < expr .)
+    )               reduce using rule 45 (condition -> expr < expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 82
 
-    (48) condition -> expr EQEQ expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 48 (condition -> expr EQEQ expr .)
-    )               reduce using rule 48 (condition -> expr EQEQ expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (46) condition -> expr NOTEQ expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 46 (condition -> expr NOTEQ expr .)
+    )               reduce using rule 46 (condition -> expr NOTEQ expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 83
 
-    (36) expr -> expr / expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    ARROWOP         reduce using rule 36 (expr -> expr / expr .)
-    <               reduce using rule 36 (expr -> expr / expr .)
-    NOTEQ           reduce using rule 36 (expr -> expr / expr .)
-    EQSTHAN         reduce using rule 36 (expr -> expr / expr .)
-    EQGTHAN         reduce using rule 36 (expr -> expr / expr .)
-    >               reduce using rule 36 (expr -> expr / expr .)
-    EQEQ            reduce using rule 36 (expr -> expr / expr .)
-    ARRAY           reduce using rule 36 (expr -> expr / expr .)
-    /               reduce using rule 36 (expr -> expr / expr .)
-    *               reduce using rule 36 (expr -> expr / expr .)
-    ^               reduce using rule 36 (expr -> expr / expr .)
-    %               reduce using rule 36 (expr -> expr / expr .)
-    -               reduce using rule 36 (expr -> expr / expr .)
-    +               reduce using rule 36 (expr -> expr / expr .)
-    $end            reduce using rule 36 (expr -> expr / expr .)
-    )               reduce using rule 36 (expr -> expr / expr .)
-    {               reduce using rule 36 (expr -> expr / expr .)
+    (47) condition -> expr EQSTHAN expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 47 (condition -> expr EQSTHAN expr .)
+    )               reduce using rule 47 (condition -> expr EQSTHAN expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 84
 
-    (37) expr -> expr * expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    ARROWOP         reduce using rule 37 (expr -> expr * expr .)
-    <               reduce using rule 37 (expr -> expr * expr .)
-    NOTEQ           reduce using rule 37 (expr -> expr * expr .)
-    EQSTHAN         reduce using rule 37 (expr -> expr * expr .)
-    EQGTHAN         reduce using rule 37 (expr -> expr * expr .)
-    >               reduce using rule 37 (expr -> expr * expr .)
-    EQEQ            reduce using rule 37 (expr -> expr * expr .)
-    ARRAY           reduce using rule 37 (expr -> expr * expr .)
-    /               reduce using rule 37 (expr -> expr * expr .)
-    *               reduce using rule 37 (expr -> expr * expr .)
-    ^               reduce using rule 37 (expr -> expr * expr .)
-    %               reduce using rule 37 (expr -> expr * expr .)
-    -               reduce using rule 37 (expr -> expr * expr .)
-    +               reduce using rule 37 (expr -> expr * expr .)
-    $end            reduce using rule 37 (expr -> expr * expr .)
-    )               reduce using rule 37 (expr -> expr * expr .)
-    {               reduce using rule 37 (expr -> expr * expr .)
+    (48) condition -> expr EQGTHAN expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 48 (condition -> expr EQGTHAN expr .)
+    )               reduce using rule 48 (condition -> expr EQGTHAN expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 85
 
-    (38) expr -> expr ^ expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-  ! shift/reduce conflict for ARRAY resolved as shift
-  ! shift/reduce conflict for / resolved as shift
-  ! shift/reduce conflict for * resolved as shift
-  ! shift/reduce conflict for ^ resolved as shift
-  ! shift/reduce conflict for % resolved as shift
-  ! shift/reduce conflict for - resolved as shift
-  ! shift/reduce conflict for + resolved as shift
-    ARROWOP         reduce using rule 38 (expr -> expr ^ expr .)
-    <               reduce using rule 38 (expr -> expr ^ expr .)
-    NOTEQ           reduce using rule 38 (expr -> expr ^ expr .)
-    EQSTHAN         reduce using rule 38 (expr -> expr ^ expr .)
-    EQGTHAN         reduce using rule 38 (expr -> expr ^ expr .)
-    >               reduce using rule 38 (expr -> expr ^ expr .)
-    EQEQ            reduce using rule 38 (expr -> expr ^ expr .)
-    $end            reduce using rule 38 (expr -> expr ^ expr .)
-    )               reduce using rule 38 (expr -> expr ^ expr .)
-    {               reduce using rule 38 (expr -> expr ^ expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (49) condition -> expr > expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 49 (condition -> expr > expr .)
+    )               reduce using rule 49 (condition -> expr > expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 86
 
-    (39) expr -> expr % expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
+    (50) condition -> expr EQEQ expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 50 (condition -> expr EQEQ expr .)
+    )               reduce using rule 50 (condition -> expr EQEQ expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
+
+
+state 87
+
+    (38) expr -> expr / expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    ARROWOP         reduce using rule 38 (expr -> expr / expr .)
+    <               reduce using rule 38 (expr -> expr / expr .)
+    NOTEQ           reduce using rule 38 (expr -> expr / expr .)
+    EQSTHAN         reduce using rule 38 (expr -> expr / expr .)
+    EQGTHAN         reduce using rule 38 (expr -> expr / expr .)
+    >               reduce using rule 38 (expr -> expr / expr .)
+    EQEQ            reduce using rule 38 (expr -> expr / expr .)
+    ARRAY           reduce using rule 38 (expr -> expr / expr .)
+    /               reduce using rule 38 (expr -> expr / expr .)
+    *               reduce using rule 38 (expr -> expr / expr .)
+    ^               reduce using rule 38 (expr -> expr / expr .)
+    %               reduce using rule 38 (expr -> expr / expr .)
+    -               reduce using rule 38 (expr -> expr / expr .)
+    +               reduce using rule 38 (expr -> expr / expr .)
+    $end            reduce using rule 38 (expr -> expr / expr .)
+    )               reduce using rule 38 (expr -> expr / expr .)
+    {               reduce using rule 38 (expr -> expr / expr .)
+
+
+state 88
+
+    (39) expr -> expr * expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    ARROWOP         reduce using rule 39 (expr -> expr * expr .)
+    <               reduce using rule 39 (expr -> expr * expr .)
+    NOTEQ           reduce using rule 39 (expr -> expr * expr .)
+    EQSTHAN         reduce using rule 39 (expr -> expr * expr .)
+    EQGTHAN         reduce using rule 39 (expr -> expr * expr .)
+    >               reduce using rule 39 (expr -> expr * expr .)
+    EQEQ            reduce using rule 39 (expr -> expr * expr .)
+    ARRAY           reduce using rule 39 (expr -> expr * expr .)
+    /               reduce using rule 39 (expr -> expr * expr .)
+    *               reduce using rule 39 (expr -> expr * expr .)
+    ^               reduce using rule 39 (expr -> expr * expr .)
+    %               reduce using rule 39 (expr -> expr * expr .)
+    -               reduce using rule 39 (expr -> expr * expr .)
+    +               reduce using rule 39 (expr -> expr * expr .)
+    $end            reduce using rule 39 (expr -> expr * expr .)
+    )               reduce using rule 39 (expr -> expr * expr .)
+    {               reduce using rule 39 (expr -> expr * expr .)
+
+
+state 89
+
+    (40) expr -> expr ^ expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
   ! shift/reduce conflict for ARRAY resolved as shift
   ! shift/reduce conflict for / resolved as shift
   ! shift/reduce conflict for * resolved as shift
@@ -2083,400 +2079,436 @@ state 86
   ! shift/reduce conflict for % resolved as shift
   ! shift/reduce conflict for - resolved as shift
   ! shift/reduce conflict for + resolved as shift
-    ARROWOP         reduce using rule 39 (expr -> expr % expr .)
-    <               reduce using rule 39 (expr -> expr % expr .)
-    NOTEQ           reduce using rule 39 (expr -> expr % expr .)
-    EQSTHAN         reduce using rule 39 (expr -> expr % expr .)
-    EQGTHAN         reduce using rule 39 (expr -> expr % expr .)
-    >               reduce using rule 39 (expr -> expr % expr .)
-    EQEQ            reduce using rule 39 (expr -> expr % expr .)
-    $end            reduce using rule 39 (expr -> expr % expr .)
-    )               reduce using rule 39 (expr -> expr % expr .)
-    {               reduce using rule 39 (expr -> expr % expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
-
-
-state 87
-
-    (40) expr -> expr - expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    ARROWOP         reduce using rule 40 (expr -> expr - expr .)
-    <               reduce using rule 40 (expr -> expr - expr .)
-    NOTEQ           reduce using rule 40 (expr -> expr - expr .)
-    EQSTHAN         reduce using rule 40 (expr -> expr - expr .)
-    EQGTHAN         reduce using rule 40 (expr -> expr - expr .)
-    >               reduce using rule 40 (expr -> expr - expr .)
-    EQEQ            reduce using rule 40 (expr -> expr - expr .)
-    ARRAY           reduce using rule 40 (expr -> expr - expr .)
-    ^               reduce using rule 40 (expr -> expr - expr .)
-    %               reduce using rule 40 (expr -> expr - expr .)
-    -               reduce using rule 40 (expr -> expr - expr .)
-    +               reduce using rule 40 (expr -> expr - expr .)
-    $end            reduce using rule 40 (expr -> expr - expr .)
-    )               reduce using rule 40 (expr -> expr - expr .)
-    {               reduce using rule 40 (expr -> expr - expr .)
-    /               shift and go to state 43
-    *               shift and go to state 44
-
-
-state 88
-
-    (41) expr -> expr + expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    ARROWOP         reduce using rule 41 (expr -> expr + expr .)
-    <               reduce using rule 41 (expr -> expr + expr .)
-    NOTEQ           reduce using rule 41 (expr -> expr + expr .)
-    EQSTHAN         reduce using rule 41 (expr -> expr + expr .)
-    EQGTHAN         reduce using rule 41 (expr -> expr + expr .)
-    >               reduce using rule 41 (expr -> expr + expr .)
-    EQEQ            reduce using rule 41 (expr -> expr + expr .)
-    ARRAY           reduce using rule 41 (expr -> expr + expr .)
-    ^               reduce using rule 41 (expr -> expr + expr .)
-    %               reduce using rule 41 (expr -> expr + expr .)
-    -               reduce using rule 41 (expr -> expr + expr .)
-    +               reduce using rule 41 (expr -> expr + expr .)
-    $end            reduce using rule 41 (expr -> expr + expr .)
-    )               reduce using rule 41 (expr -> expr + expr .)
-    {               reduce using rule 41 (expr -> expr + expr .)
-    /               shift and go to state 43
-    *               shift and go to state 44
-
-
-state 89
-
-    (4) statement -> WHILE ( condition . ) {
-    )               shift and go to state 102
+    ARROWOP         reduce using rule 40 (expr -> expr ^ expr .)
+    <               reduce using rule 40 (expr -> expr ^ expr .)
+    NOTEQ           reduce using rule 40 (expr -> expr ^ expr .)
+    EQSTHAN         reduce using rule 40 (expr -> expr ^ expr .)
+    EQGTHAN         reduce using rule 40 (expr -> expr ^ expr .)
+    >               reduce using rule 40 (expr -> expr ^ expr .)
+    EQEQ            reduce using rule 40 (expr -> expr ^ expr .)
+    $end            reduce using rule 40 (expr -> expr ^ expr .)
+    )               reduce using rule 40 (expr -> expr ^ expr .)
+    {               reduce using rule 40 (expr -> expr ^ expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 90
 
-    (43) condition -> expr . < expr
-    (44) condition -> expr . NOTEQ expr
-    (45) condition -> expr . EQSTHAN expr
-    (46) condition -> expr . EQGTHAN expr
-    (47) condition -> expr . > expr
-    (48) condition -> expr . EQEQ expr
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    <               shift and go to state 36
-    NOTEQ           shift and go to state 37
-    EQSTHAN         shift and go to state 38
-    EQGTHAN         shift and go to state 39
-    >               shift and go to state 40
-    EQEQ            shift and go to state 41
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (41) expr -> expr % expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+  ! shift/reduce conflict for ARRAY resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for ^ resolved as shift
+  ! shift/reduce conflict for % resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for + resolved as shift
+    ARROWOP         reduce using rule 41 (expr -> expr % expr .)
+    <               reduce using rule 41 (expr -> expr % expr .)
+    NOTEQ           reduce using rule 41 (expr -> expr % expr .)
+    EQSTHAN         reduce using rule 41 (expr -> expr % expr .)
+    EQGTHAN         reduce using rule 41 (expr -> expr % expr .)
+    >               reduce using rule 41 (expr -> expr % expr .)
+    EQEQ            reduce using rule 41 (expr -> expr % expr .)
+    $end            reduce using rule 41 (expr -> expr % expr .)
+    )               reduce using rule 41 (expr -> expr % expr .)
+    {               reduce using rule 41 (expr -> expr % expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 91
 
-    (32) expr -> ( expr ) .
-    ARROWOP         reduce using rule 32 (expr -> ( expr ) .)
-    <               reduce using rule 32 (expr -> ( expr ) .)
-    NOTEQ           reduce using rule 32 (expr -> ( expr ) .)
-    EQSTHAN         reduce using rule 32 (expr -> ( expr ) .)
-    EQGTHAN         reduce using rule 32 (expr -> ( expr ) .)
-    >               reduce using rule 32 (expr -> ( expr ) .)
-    EQEQ            reduce using rule 32 (expr -> ( expr ) .)
-    ARRAY           reduce using rule 32 (expr -> ( expr ) .)
-    /               reduce using rule 32 (expr -> ( expr ) .)
-    *               reduce using rule 32 (expr -> ( expr ) .)
-    ^               reduce using rule 32 (expr -> ( expr ) .)
-    %               reduce using rule 32 (expr -> ( expr ) .)
-    -               reduce using rule 32 (expr -> ( expr ) .)
-    +               reduce using rule 32 (expr -> ( expr ) .)
-    $end            reduce using rule 32 (expr -> ( expr ) .)
-    )               reduce using rule 32 (expr -> ( expr ) .)
-    {               reduce using rule 32 (expr -> ( expr ) .)
+    (42) expr -> expr - expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    ARROWOP         reduce using rule 42 (expr -> expr - expr .)
+    <               reduce using rule 42 (expr -> expr - expr .)
+    NOTEQ           reduce using rule 42 (expr -> expr - expr .)
+    EQSTHAN         reduce using rule 42 (expr -> expr - expr .)
+    EQGTHAN         reduce using rule 42 (expr -> expr - expr .)
+    >               reduce using rule 42 (expr -> expr - expr .)
+    EQEQ            reduce using rule 42 (expr -> expr - expr .)
+    ARRAY           reduce using rule 42 (expr -> expr - expr .)
+    ^               reduce using rule 42 (expr -> expr - expr .)
+    %               reduce using rule 42 (expr -> expr - expr .)
+    -               reduce using rule 42 (expr -> expr - expr .)
+    +               reduce using rule 42 (expr -> expr - expr .)
+    $end            reduce using rule 42 (expr -> expr - expr .)
+    )               reduce using rule 42 (expr -> expr - expr .)
+    {               reduce using rule 42 (expr -> expr - expr .)
+    /               shift and go to state 45
+    *               shift and go to state 46
 
 
 state 92
 
-    (30) expr -> GLOBAL IDENTIFIER .
-    )               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    ARRAY           reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    /               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    *               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    ^               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    %               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    -               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    +               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    <               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    NOTEQ           reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    EQSTHAN         reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    EQGTHAN         reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    >               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    EQEQ            reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    $end            reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    ARROWOP         reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
-    {               reduce using rule 30 (expr -> GLOBAL IDENTIFIER .)
+    (43) expr -> expr + expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    ARROWOP         reduce using rule 43 (expr -> expr + expr .)
+    <               reduce using rule 43 (expr -> expr + expr .)
+    NOTEQ           reduce using rule 43 (expr -> expr + expr .)
+    EQSTHAN         reduce using rule 43 (expr -> expr + expr .)
+    EQGTHAN         reduce using rule 43 (expr -> expr + expr .)
+    >               reduce using rule 43 (expr -> expr + expr .)
+    EQEQ            reduce using rule 43 (expr -> expr + expr .)
+    ARRAY           reduce using rule 43 (expr -> expr + expr .)
+    ^               reduce using rule 43 (expr -> expr + expr .)
+    %               reduce using rule 43 (expr -> expr + expr .)
+    -               reduce using rule 43 (expr -> expr + expr .)
+    +               reduce using rule 43 (expr -> expr + expr .)
+    $end            reduce using rule 43 (expr -> expr + expr .)
+    )               reduce using rule 43 (expr -> expr + expr .)
+    {               reduce using rule 43 (expr -> expr + expr .)
+    /               shift and go to state 45
+    *               shift and go to state 46
 
 
 state 93
 
-    (6) statement -> IF ( condition . ) {
-    )               shift and go to state 103
+    (4) statement -> WHILE ( condition . ) {
+    )               shift and go to state 106
 
 
 state 94
+
+    (45) condition -> expr . < expr
+    (46) condition -> expr . NOTEQ expr
+    (47) condition -> expr . EQSTHAN expr
+    (48) condition -> expr . EQGTHAN expr
+    (49) condition -> expr . > expr
+    (50) condition -> expr . EQEQ expr
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    <               shift and go to state 38
+    NOTEQ           shift and go to state 39
+    EQSTHAN         shift and go to state 40
+    EQGTHAN         shift and go to state 41
+    >               shift and go to state 42
+    EQEQ            shift and go to state 43
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
+
+
+state 95
+
+    (34) expr -> ( expr ) .
+    ARROWOP         reduce using rule 34 (expr -> ( expr ) .)
+    <               reduce using rule 34 (expr -> ( expr ) .)
+    NOTEQ           reduce using rule 34 (expr -> ( expr ) .)
+    EQSTHAN         reduce using rule 34 (expr -> ( expr ) .)
+    EQGTHAN         reduce using rule 34 (expr -> ( expr ) .)
+    >               reduce using rule 34 (expr -> ( expr ) .)
+    EQEQ            reduce using rule 34 (expr -> ( expr ) .)
+    ARRAY           reduce using rule 34 (expr -> ( expr ) .)
+    /               reduce using rule 34 (expr -> ( expr ) .)
+    *               reduce using rule 34 (expr -> ( expr ) .)
+    ^               reduce using rule 34 (expr -> ( expr ) .)
+    %               reduce using rule 34 (expr -> ( expr ) .)
+    -               reduce using rule 34 (expr -> ( expr ) .)
+    +               reduce using rule 34 (expr -> ( expr ) .)
+    $end            reduce using rule 34 (expr -> ( expr ) .)
+    )               reduce using rule 34 (expr -> ( expr ) .)
+    {               reduce using rule 34 (expr -> ( expr ) .)
+
+
+state 96
+
+    (32) expr -> GLOBAL IDENTIFIER .
+    )               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    ARRAY           reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    /               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    *               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    ^               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    %               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    -               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    +               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    <               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    NOTEQ           reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    EQSTHAN         reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    EQGTHAN         reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    >               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    EQEQ            reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    $end            reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    ARROWOP         reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+    {               reduce using rule 32 (expr -> GLOBAL IDENTIFIER .)
+
+
+state 97
+
+    (6) statement -> IF ( condition . ) {
+    )               shift and go to state 107
+
+
+state 98
 
     (8) statement -> ARROWOP GLOBAL IDENTIFIER .
     $end            reduce using rule 8 (statement -> ARROWOP GLOBAL IDENTIFIER .)
 
 
-state 95
-
-    (17) statement -> GLOBAL MACRO IDENTIFIER . {
-    {               shift and go to state 104
-
-
-state 96
-
-    (51) var_assign -> GLOBAL IDENTIFIER = . condition
-    (52) var_assign -> GLOBAL IDENTIFIER = . expr
-    (43) condition -> . expr < expr
-    (44) condition -> . expr NOTEQ expr
-    (45) condition -> . expr EQSTHAN expr
-    (46) condition -> . expr EQGTHAN expr
-    (47) condition -> . expr > expr
-    (48) condition -> . expr EQEQ expr
-    (49) condition -> . FALSE
-    (50) condition -> . TRUE
-    (23) expr -> . IDENTIFIER ( )
-    (24) expr -> . PARAM expr
-    (25) expr -> . ARGV
-    (26) expr -> . ARGC
-    (27) expr -> . expr ARRAY
-    (28) expr -> . ARRAY
-    (29) expr -> . FLOAT
-    (30) expr -> . GLOBAL IDENTIFIER
-    (31) expr -> . IDENTIFIER
-    (32) expr -> . ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . NUMBER
-    (35) expr -> . STRING
-    (36) expr -> . expr / expr
-    (37) expr -> . expr * expr
-    (38) expr -> . expr ^ expr
-    (39) expr -> . expr % expr
-    (40) expr -> . expr - expr
-    (41) expr -> . expr + expr
-    (42) expr -> . TYPEOF expr
-    FALSE           shift and go to state 21
-    TRUE            shift and go to state 22
-    IDENTIFIER      shift and go to state 51
-    PARAM           shift and go to state 23
-    ARGV            shift and go to state 24
-    ARGC            shift and go to state 25
-    ARRAY           shift and go to state 14
-    FLOAT           shift and go to state 26
-    GLOBAL          shift and go to state 52
-    (               shift and go to state 8
-    -               shift and go to state 27
-    NUMBER          shift and go to state 28
-    STRING          shift and go to state 18
-    TYPEOF          shift and go to state 29
-
-    condition                      shift and go to state 105
-    expr                           shift and go to state 106
-
-state 97
-
-    (16) statement -> MACRO IDENTIFIER : . IDENTIFIER ( ) {
-    IDENTIFIER      shift and go to state 107
-
-
-state 98
-
-    (22) statement -> FUNCTION IDENTIFIER ( . ) {
-    )               shift and go to state 108
-
-
 state 99
 
-    (3) statement -> FOR IDENTIFIER IN expr . {
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    {               shift and go to state 109
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (17) statement -> GLOBAL MACRO IDENTIFIER . {
+    {               shift and go to state 108
 
 
 state 100
 
-    (14) statement -> IDENTIFIER ARRAY = expr .
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 14 (statement -> IDENTIFIER ARRAY = expr .)
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (53) var_assign -> GLOBAL IDENTIFIER = . condition
+    (54) var_assign -> GLOBAL IDENTIFIER = . expr
+    (45) condition -> . expr < expr
+    (46) condition -> . expr NOTEQ expr
+    (47) condition -> . expr EQSTHAN expr
+    (48) condition -> . expr EQGTHAN expr
+    (49) condition -> . expr > expr
+    (50) condition -> . expr EQEQ expr
+    (51) condition -> . FALSE
+    (52) condition -> . TRUE
+    (25) expr -> . IDENTIFIER ( )
+    (26) expr -> . PARAM expr
+    (27) expr -> . ARGV
+    (28) expr -> . ARGC
+    (29) expr -> . expr ARRAY
+    (30) expr -> . ARRAY
+    (31) expr -> . FLOAT
+    (32) expr -> . GLOBAL IDENTIFIER
+    (33) expr -> . IDENTIFIER
+    (34) expr -> . ( expr )
+    (35) expr -> . - expr
+    (36) expr -> . NUMBER
+    (37) expr -> . STRING
+    (38) expr -> . expr / expr
+    (39) expr -> . expr * expr
+    (40) expr -> . expr ^ expr
+    (41) expr -> . expr % expr
+    (42) expr -> . expr - expr
+    (43) expr -> . expr + expr
+    (44) expr -> . TYPEOF expr
+    FALSE           shift and go to state 23
+    TRUE            shift and go to state 24
+    IDENTIFIER      shift and go to state 53
+    PARAM           shift and go to state 25
+    ARGV            shift and go to state 26
+    ARGC            shift and go to state 27
+    ARRAY           shift and go to state 14
+    FLOAT           shift and go to state 28
+    GLOBAL          shift and go to state 54
+    (               shift and go to state 8
+    -               shift and go to state 29
+    NUMBER          shift and go to state 30
+    STRING          shift and go to state 20
+    TYPEOF          shift and go to state 31
 
+    condition                      shift and go to state 109
+    expr                           shift and go to state 110
 
 state 101
 
-    (9) statement -> expr ARROWOP IDENTIFIER ( . )
-    )               shift and go to state 110
+    (16) statement -> MACRO IDENTIFIER : . IDENTIFIER ( ) {
+    IDENTIFIER      shift and go to state 111
 
 
 state 102
 
-    (4) statement -> WHILE ( condition ) . {
-    {               shift and go to state 111
+    (24) statement -> FUNCTION IDENTIFIER ( . ) {
+    )               shift and go to state 112
 
 
 state 103
 
-    (6) statement -> IF ( condition ) . {
-    {               shift and go to state 112
+    (3) statement -> FOR IDENTIFIER IN expr . {
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    {               shift and go to state 113
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
 
 
 state 104
+
+    (14) statement -> IDENTIFIER ARRAY = expr .
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 14 (statement -> IDENTIFIER ARRAY = expr .)
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
+
+
+state 105
+
+    (9) statement -> expr ARROWOP IDENTIFIER ( . )
+    )               shift and go to state 114
+
+
+state 106
+
+    (4) statement -> WHILE ( condition ) . {
+    {               shift and go to state 115
+
+
+state 107
+
+    (6) statement -> IF ( condition ) . {
+    {               shift and go to state 116
+
+
+state 108
 
     (17) statement -> GLOBAL MACRO IDENTIFIER { .
     $end            reduce using rule 17 (statement -> GLOBAL MACRO IDENTIFIER { .)
 
 
-state 105
+state 109
 
-    (51) var_assign -> GLOBAL IDENTIFIER = condition .
-    $end            reduce using rule 51 (var_assign -> GLOBAL IDENTIFIER = condition .)
-
-
-state 106
-
-    (52) var_assign -> GLOBAL IDENTIFIER = expr .
-    (43) condition -> expr . < expr
-    (44) condition -> expr . NOTEQ expr
-    (45) condition -> expr . EQSTHAN expr
-    (46) condition -> expr . EQGTHAN expr
-    (47) condition -> expr . > expr
-    (48) condition -> expr . EQEQ expr
-    (27) expr -> expr . ARRAY
-    (36) expr -> expr . / expr
-    (37) expr -> expr . * expr
-    (38) expr -> expr . ^ expr
-    (39) expr -> expr . % expr
-    (40) expr -> expr . - expr
-    (41) expr -> expr . + expr
-    $end            reduce using rule 52 (var_assign -> GLOBAL IDENTIFIER = expr .)
-    <               shift and go to state 36
-    NOTEQ           shift and go to state 37
-    EQSTHAN         shift and go to state 38
-    EQGTHAN         shift and go to state 39
-    >               shift and go to state 40
-    EQEQ            shift and go to state 41
-    ARRAY           shift and go to state 42
-    /               shift and go to state 43
-    *               shift and go to state 44
-    ^               shift and go to state 45
-    %               shift and go to state 46
-    -               shift and go to state 47
-    +               shift and go to state 48
+    (53) var_assign -> GLOBAL IDENTIFIER = condition .
+    $end            reduce using rule 53 (var_assign -> GLOBAL IDENTIFIER = condition .)
 
 
-state 107
+state 110
+
+    (54) var_assign -> GLOBAL IDENTIFIER = expr .
+    (45) condition -> expr . < expr
+    (46) condition -> expr . NOTEQ expr
+    (47) condition -> expr . EQSTHAN expr
+    (48) condition -> expr . EQGTHAN expr
+    (49) condition -> expr . > expr
+    (50) condition -> expr . EQEQ expr
+    (29) expr -> expr . ARRAY
+    (38) expr -> expr . / expr
+    (39) expr -> expr . * expr
+    (40) expr -> expr . ^ expr
+    (41) expr -> expr . % expr
+    (42) expr -> expr . - expr
+    (43) expr -> expr . + expr
+    $end            reduce using rule 54 (var_assign -> GLOBAL IDENTIFIER = expr .)
+    <               shift and go to state 38
+    NOTEQ           shift and go to state 39
+    EQSTHAN         shift and go to state 40
+    EQGTHAN         shift and go to state 41
+    >               shift and go to state 42
+    EQEQ            shift and go to state 43
+    ARRAY           shift and go to state 44
+    /               shift and go to state 45
+    *               shift and go to state 46
+    ^               shift and go to state 47
+    %               shift and go to state 48
+    -               shift and go to state 49
+    +               shift and go to state 50
+
+
+state 111
 
     (16) statement -> MACRO IDENTIFIER : IDENTIFIER . ( ) {
-    (               shift and go to state 113
+    (               shift and go to state 117
 
 
-state 108
+state 112
 
-    (22) statement -> FUNCTION IDENTIFIER ( ) . {
-    {               shift and go to state 114
+    (24) statement -> FUNCTION IDENTIFIER ( ) . {
+    {               shift and go to state 118
 
 
-state 109
+state 113
 
     (3) statement -> FOR IDENTIFIER IN expr { .
     $end            reduce using rule 3 (statement -> FOR IDENTIFIER IN expr { .)
 
 
-state 110
+state 114
 
     (9) statement -> expr ARROWOP IDENTIFIER ( ) .
     $end            reduce using rule 9 (statement -> expr ARROWOP IDENTIFIER ( ) .)
 
 
-state 111
+state 115
 
     (4) statement -> WHILE ( condition ) { .
     $end            reduce using rule 4 (statement -> WHILE ( condition ) { .)
 
 
-state 112
+state 116
 
     (6) statement -> IF ( condition ) { .
     $end            reduce using rule 6 (statement -> IF ( condition ) { .)
 
 
-state 113
+state 117
 
     (16) statement -> MACRO IDENTIFIER : IDENTIFIER ( . ) {
-    )               shift and go to state 115
+    )               shift and go to state 119
 
 
-state 114
+state 118
 
-    (22) statement -> FUNCTION IDENTIFIER ( ) { .
-    $end            reduce using rule 22 (statement -> FUNCTION IDENTIFIER ( ) { .)
+    (24) statement -> FUNCTION IDENTIFIER ( ) { .
+    $end            reduce using rule 24 (statement -> FUNCTION IDENTIFIER ( ) { .)
 
 
-state 115
+state 119
 
     (16) statement -> MACRO IDENTIFIER : IDENTIFIER ( ) . {
-    {               shift and go to state 116
+    {               shift and go to state 120
 
 
-state 116
+state 120
 
     (16) statement -> MACRO IDENTIFIER : IDENTIFIER ( ) { .
     $end            reduce using rule 16 (statement -> MACRO IDENTIFIER : IDENTIFIER ( ) { .)
@@ -2486,31 +2518,31 @@ Conflicts:
 
 shift/reduce conflict for ARRAY in state 5 resolved as shift
 shift/reduce conflict for + in state 5 resolved as shift
-shift/reduce conflict for ARRAY in state 67 resolved as shift
-shift/reduce conflict for / in state 67 resolved as shift
-shift/reduce conflict for * in state 67 resolved as shift
-shift/reduce conflict for ^ in state 67 resolved as shift
-shift/reduce conflict for % in state 67 resolved as shift
-shift/reduce conflict for - in state 67 resolved as shift
-shift/reduce conflict for + in state 67 resolved as shift
-shift/reduce conflict for ARRAY in state 69 resolved as shift
-shift/reduce conflict for / in state 69 resolved as shift
-shift/reduce conflict for * in state 69 resolved as shift
-shift/reduce conflict for ^ in state 69 resolved as shift
-shift/reduce conflict for % in state 69 resolved as shift
-shift/reduce conflict for - in state 69 resolved as shift
-shift/reduce conflict for + in state 69 resolved as shift
-shift/reduce conflict for ARRAY in state 85 resolved as shift
-shift/reduce conflict for / in state 85 resolved as shift
-shift/reduce conflict for * in state 85 resolved as shift
-shift/reduce conflict for ^ in state 85 resolved as shift
-shift/reduce conflict for % in state 85 resolved as shift
-shift/reduce conflict for - in state 85 resolved as shift
-shift/reduce conflict for + in state 85 resolved as shift
-shift/reduce conflict for ARRAY in state 86 resolved as shift
-shift/reduce conflict for / in state 86 resolved as shift
-shift/reduce conflict for * in state 86 resolved as shift
-shift/reduce conflict for ^ in state 86 resolved as shift
-shift/reduce conflict for % in state 86 resolved as shift
-shift/reduce conflict for - in state 86 resolved as shift
-shift/reduce conflict for + in state 86 resolved as shift
+shift/reduce conflict for ARRAY in state 71 resolved as shift
+shift/reduce conflict for / in state 71 resolved as shift
+shift/reduce conflict for * in state 71 resolved as shift
+shift/reduce conflict for ^ in state 71 resolved as shift
+shift/reduce conflict for % in state 71 resolved as shift
+shift/reduce conflict for - in state 71 resolved as shift
+shift/reduce conflict for + in state 71 resolved as shift
+shift/reduce conflict for ARRAY in state 73 resolved as shift
+shift/reduce conflict for / in state 73 resolved as shift
+shift/reduce conflict for * in state 73 resolved as shift
+shift/reduce conflict for ^ in state 73 resolved as shift
+shift/reduce conflict for % in state 73 resolved as shift
+shift/reduce conflict for - in state 73 resolved as shift
+shift/reduce conflict for + in state 73 resolved as shift
+shift/reduce conflict for ARRAY in state 89 resolved as shift
+shift/reduce conflict for / in state 89 resolved as shift
+shift/reduce conflict for * in state 89 resolved as shift
+shift/reduce conflict for ^ in state 89 resolved as shift
+shift/reduce conflict for % in state 89 resolved as shift
+shift/reduce conflict for - in state 89 resolved as shift
+shift/reduce conflict for + in state 89 resolved as shift
+shift/reduce conflict for ARRAY in state 90 resolved as shift
+shift/reduce conflict for / in state 90 resolved as shift
+shift/reduce conflict for * in state 90 resolved as shift
+shift/reduce conflict for ^ in state 90 resolved as shift
+shift/reduce conflict for % in state 90 resolved as shift
+shift/reduce conflict for - in state 90 resolved as shift
+shift/reduce conflict for + in state 90 resolved as shift

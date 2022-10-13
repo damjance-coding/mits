@@ -6,7 +6,7 @@ class Lex(Lexer):
 
     
 
-    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER, MACRO,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END }
+    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER, MACRO,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT }
     literals = {"{", "}", "+", "-", "*", "/", "(", ")", "=", "<", ">", ",", "[", "]", ":", "%", "^"}
 
     ignore = '\t \n'
@@ -37,8 +37,8 @@ class Lex(Lexer):
     RETURN = r'return'
     TRUE = 'true'
     FALSE= 'false'
-    #TRY = r"try"
-    #EXCEPT = r"except"
+    TRY = r"try"
+    EXCEPT = r"except"
     FOR  = "for"
     IN = "in"
     TYPEOF = r"typeof"

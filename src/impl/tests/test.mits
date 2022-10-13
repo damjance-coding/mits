@@ -1,3 +1,9 @@
 function main () {
-    write "Hello world"
+    i = 0
+    try {
+        write x
+    }
+    except {
+        write "went into except"
+    }
 } fin

@@ -25,9 +25,14 @@ class Pars(Parser):
     @_('"}"')
     def statement(self ,p):
         return ("op_close_end", )
-    # @_('TRY "{" statement "}"  EXCEPT "{" statement "}" ')
-    # def statement(self ,p):
-    #     return ("try_except", p.statement0 , p.statement1)
+    @_('TRY "{"  ')
+    def statement(self ,p):
+        return ("try_start", )
+    
+    @_('EXCEPT "{"  ')
+    def statement(self ,p):
+        return ("except_start", )
+    
 
     @_('GLOBAL MACRO IDENTIFIER "{"')
     def statement(self ,p):

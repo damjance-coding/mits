@@ -176,8 +176,11 @@ for line in toplevel:
 def crossreference_blocks(obj):
     block = obj
     stack = []
+
     ifindex = []
     elseindex  = []
+    tryindex = []
+    exceptindex = []
 
     for index , node in enumerate(block) :
         if node[0] == "op_if_start":
@@ -193,11 +196,18 @@ def crossreference_blocks(obj):
             pos = stack.pop()
             block = list(block)
             
-            if block[pos[2]][0] == "op_if_start" or block[pos[2]][0] == "op_start_while"  or block[pos[2]][0] == "for_start" or block[pos[2]][0] == "else":
+            if block[pos[2]][0] == "op_if_start" or block[pos[2]][0] == "op_start_while"  or block[pos[2]][0] == "for_start" or block[pos[2]][0] == "else" or block[pos[2]][0] == "try_start" or block[pos[2]][0] == "except_start":
                 
                 if block[pos[2]][0] == "else":
                     elseind = elseindex.pop()
                     ifidn = ifindex.pop()
+                    p = block[ifidn]
+                    block[ifidn] = (p[0], p[1], p[2], elseind, index)
+                    block = tuple(block)
+
+                if block[pos[2]][0] == "except_start":
+                    elseind = exceptindex.pop()
+                    ifidn = tryindex.pop()
                     p = block[ifidn]
                     block[ifidn] = (p[0], p[1], p[2], elseind, index)
                     block = tuple(block)
@@ -206,9 +216,13 @@ def crossreference_blocks(obj):
                     block = tuple(block)
             else :
                 assert False , "missmatching `}`"
-        elif node[0] == "else":
-            stack.append(("else", "elem1", index))
-            elseindex.append(index)
+        elif node[0] == "try_start":
+            stack.append(("try_start", "elem1", index))
+            tryindex.append(index)
+
+        elif node[0] == "except_start":
+            stack.append(("except_start", "elem1", index))
+            exceptindex.append(index)
 
 
     return block
@@ -348,6 +362,8 @@ def walktree(obj, funcname):
                 
                 pos += 1
 
+        
+
             else : 
             #   print(node)
                 if res == False :
@@ -374,7 +390,38 @@ def walktree(obj, funcname):
 
         elif node[0] == "else":
             pos += 1
+
+        elif node[0] == "except_start":
+            pos += 1
         elif node[0] == "op_close_end" : pos += 1
+
+        elif node[0] == "try_start":
+            pos += 1
+            index = pos
+            try_body = ()
+            except_body = () 
+            while index < node[2]:
+                try_body += (obj[index],)
+                index += 1
+
+            print(try_body)
+
+            pos = node[3]
+            index = pos + 1
+            while index < node[4] :
+                except_body += (obj[index], )
+                index += 1
+            
+            print(except_body)
+
+            try_body = crossreference_blocks(try_body)
+            except_body = crossreference_blocks(except_body)
+            pos = node[4] + 1
+            try : walktree(try_body, funcname)
+            except : walktree(except_body, funcname)
+
+            
+
         elif node[0] == "param":
             v = env[f"{funcname}params"][walktree((node[1],), funcname)]
             pos += 1
