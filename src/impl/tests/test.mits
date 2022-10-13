@@ -1,7 +1,8 @@
-function main () {
+#include "std/std.mits"
 
-    i = 0
-    assert (i == 11) , "Pavlova mama"
-   
+Error OpIndexErr fin
+
+function main () {
     
+    throw OpIndexErr , "Invalid op index 0"
 } fin

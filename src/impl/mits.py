@@ -11,8 +11,10 @@ from typeconv import *
 parsed_tokens = ()
 
 prog = open(sys.argv[1], "r").read()
-env = {"macros" : {}, "globalvars": {}}
+env = {"errors" : {}, "globalvars": {}}
 gen = ()
+
+
 
 
 
@@ -129,6 +131,11 @@ def walktreetoplevel(node):
     elif node[0] == "expr_float":
         return node[1]
 
+    elif node[0] == 'define_error':
+        if node[1] not in env["errors"]:
+            env["errors"][node[1]] = ""
+        else : assert False , "Redeclaring errors is not allowed"
+
     elif node[0] == "con_eq_eq":
          return walktreetoplevel(node[1]) == walktreetoplevel(node[2])
     elif node[0] == "con_not_eq":
@@ -240,31 +247,33 @@ def walktree(obj, funcname):
         elif node[0] == "expr_string":
             res = [i for j in node[1].split() for i in (j, ' ')][:-1]
        
-            str = ""
+            string = ""
         
             for i in res:
                 if i == "\\n":
                     i = i.replace("\\n", "\n")
-                    str += i
+                    string += i
                 elif i == "\\t":
                     i = i.replace("\\t", "\t")
-                    str += i
+                    string += i
                 elif i == "\\r":
                     i = i.replace("\\r", "\r")
-                    str += i
+                    string += i
 
                 elif i == "\\s":
                     i = i.replace("\\s", " ")
-                    str += i
+                    string += i
 
                 elif i.startswith("{") and i.endswith("}"):
                 
                     x = i[1:-1]
                     v = p.parse(l.tokenize(x))
-                    str += walktree((v,), funcname)
-                else :  str += i
+                    
+                    string += str(walktree((v,), funcname))
+                    
+                else :  string += i
             pos += 1
-            return str
+            return string
                 
 
         elif node[0] == "expr_int":
@@ -305,10 +314,18 @@ def walktree(obj, funcname):
             pos += 1
             return len(sys.argv) - 1
 
+        elif node[0] == "throw":
+            if node[1] in env["errors"] :
+                print(f"Erorr thrown inside function `{funcname}` at operation index `{pos}` :")
+                print(f"`{node[1]}` : `{walktree((node[2],), funcname)}`")
+            else : 
+                raise Exception(f"Error {node[1]} not found")
+            pos += 1
+
         elif node[0] == "expr_pos":
             
             modf = walktree((("expr_array", node[2]),), funcname)
-        # print(modf)
+        
             pos += 1
             if len(modf) == 1 :
                 return walktree((node[1],), funcname)[modf[0]]

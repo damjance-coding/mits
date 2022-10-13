@@ -2,6 +2,7 @@ from sly import Parser
 from lexer import Lex
 
 class Pars(Parser):
+
     tokens = Lex.tokens
 
     precedence = (
@@ -28,7 +29,12 @@ class Pars(Parser):
     @_('TRY "{"  ')
     def statement(self ,p):
         return ("try_start", )
-    
+    @_('THROW IDENTIFIER , expr')
+    def statement(self ,p) :
+        return ("throw", p.IDENTIFIER , p.expr)
+    @_("ERROR IDENTIFIER END")
+    def statement(self ,p):
+        return ("define_error", p.IDENTIFIER)
     @_('EXCEPT "{"  ')
     def statement(self ,p):
         return ("except_start", )

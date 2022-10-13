@@ -1,13 +1,13 @@
 
-from sre_constants import ASSERT
+from distutils.log import ERROR
 from sly import Lexer
 
 
 class Lex(Lexer):
 
-    
+ 
 
-    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT, ASSERT }
+    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT, ASSERT, ERROR, THROW }
     literals = {"{", "}", "+", "-", "*", "/", "(", ")", "=", "<", ">", ",", "[", "]", ":", "%", "^"}
 
     ignore = '\t \n'
@@ -18,6 +18,7 @@ class Lex(Lexer):
     @_(r'\n+')
     def ignore_newline(self, t):
         self.lineno += len(t.value)
+    ERROR = r"Error"
     INCLUDE = r'#include'
     WHILE = r"while"
     ARROWOP = r"->"
@@ -36,6 +37,7 @@ class Lex(Lexer):
     ARGC = r"argc"
     PARAM = r"param"
     RETURN = r'return'
+    THROW = r'throw'
     TRUE = 'true'
     FALSE= 'false'
     TRY = r"try"
