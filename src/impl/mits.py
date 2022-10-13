@@ -207,7 +207,8 @@ def crossreference_blocks(obj):
 
                 if block[pos[2]][0] == "except_start":
                     elseind = exceptindex.pop()
-                    ifidn = tryindex.pop()
+                    try : ifidn = tryindex.pop()
+                    except : raise Exception("Missmatching `except`")
                     p = block[ifidn]
                     block[ifidn] = (p[0], p[1], p[2], elseind, index)
                     block = tuple(block)
@@ -331,26 +332,6 @@ def walktree(obj, funcname):
             pos += 1
             return node[1]
 
-        elif node[0] == "callmacro":
-            if node[1] in env[f"{funcname}macros"]:
-        
-                walktree(crossreference_blocks(env[f"{funcname}macros"][node[1]][0]) , funcname)
-                    
-            else : raise NameErr(f"NameErr : function `{funcname}` does not have a macro named `{node[1]}`")
-            pos += 1
-
-        elif node[0] == "callmacro_global":
-            if node[1] in env["macros"]:
-                for mac in env["macros"][node[1]]:
-                    for op in mac:
-                
-                        walktree(op, funcname)
-                
-                        env[f"{funcname}returnvalue"] = [walktree(op[1], funcname)]
-                    
-
-            else : raise NameErr(f"NameErr : No global macro named {node[1]}")
-            pos += 1
         elif node[0] == "op_if_start":
             
             res = walktree((node[1],), funcname)
@@ -392,6 +373,7 @@ def walktree(obj, funcname):
             pos += 1
 
         elif node[0] == "except_start":
+            raise Exception("missmactching except")
             pos += 1
         elif node[0] == "op_close_end" : pos += 1
 
@@ -400,6 +382,7 @@ def walktree(obj, funcname):
             index = pos
             try_body = ()
             except_body = () 
+            assert len(node) == 5, "Try blocks need to have a except block"
             while index < node[2]:
                 try_body += (obj[index],)
                 index += 1
@@ -451,6 +434,9 @@ def walktree(obj, funcname):
 
             # pos += 1
 
+        elif node[0] == "assertion":
+            assert walktree((node[1],), funcname) , walktree((node[2],), funcname) 
+
         elif node[0] == "con_eq_eq":
             
              pos += 1
@@ -489,8 +475,8 @@ def walktree(obj, funcname):
                 
                 while walktree((node[1],) , funcname)  : walktree(body, funcname)
                 
-                # if index == node[2]:
-                #     pos = node[2] 
+                if index == node[2]:
+                    pos = node[2] 
 
             # pos += 1
 

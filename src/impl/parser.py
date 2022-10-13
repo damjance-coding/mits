@@ -32,20 +32,15 @@ class Pars(Parser):
     @_('EXCEPT "{"  ')
     def statement(self ,p):
         return ("except_start", )
-    
 
-    @_('GLOBAL MACRO IDENTIFIER "{"')
-    def statement(self ,p):
-        return ("op_declare_global_macro", p.IDENTIFIER )
-
+    @_('ASSERT "(" condition ")" "," expr')
+    def statement(self , p):
+        return ("assertion", p.condition, p.expr)
     @_("TYPEOF expr")
     def expr(self ,p):
         return ("typeof", p.expr)
 
-    @_('MACRO IDENTIFIER ":" IDENTIFIER "(" ")" "{"')
-    def statement(self ,p):
-        return ("op_declare_local_macro", p.IDENTIFIER0 , p.IDENTIFIER1 )
-
+   
     @_('"}" END')
     def statement(self ,p):
         return ("op_close",) 

@@ -1,9 +1,7 @@
 function main () {
+
     i = 0
-    try {
-        write x
-    }
-    except {
-        write "went into except"
-    }
+    assert (i == 11) , "Pavlova mama"
+   
+    
 } fin

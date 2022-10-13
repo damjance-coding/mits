@@ -1,4 +1,5 @@
 
+from sre_constants import ASSERT
 from sly import Lexer
 
 
@@ -6,7 +7,7 @@ class Lex(Lexer):
 
     
 
-    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER, MACRO,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT }
+    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT, ASSERT }
     literals = {"{", "}", "+", "-", "*", "/", "(", ")", "=", "<", ">", ",", "[", "]", ":", "%", "^"}
 
     ignore = '\t \n'
@@ -19,7 +20,6 @@ class Lex(Lexer):
         self.lineno += len(t.value)
     INCLUDE = r'#include'
     WHILE = r"while"
-    MACRO = r"macro"
     ARROWOP = r"->"
     FUNCTION = r"function"
     WRITE = r"write"
@@ -27,6 +27,7 @@ class Lex(Lexer):
     ARRAY = r'\[.*?\]'
     IF = r"if"
     ELSE = r"else"
+    ASSERT = r"assert"
     EQEQ = r"=="
     EQGTHAN = r'>='
     EQSTHAN = r'<='
