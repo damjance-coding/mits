@@ -435,7 +435,8 @@ def walktree(obj, funcname):
             # pos += 1
 
         elif node[0] == "assertion":
-            assert walktree((node[1],), funcname) , walktree((node[2],), funcname) 
+            assert walktree((node[1],), funcname) , walktree((node[2],), funcname)
+            pos += 1 
 
         elif node[0] == "con_eq_eq":
             
