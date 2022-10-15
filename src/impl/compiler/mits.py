@@ -1,34 +1,51 @@
-
+import subprocess
 from errors import *
 from lexer import Lex
 from parser import Pars
 import sys
-import os
 
-l = Lex()
-p = Pars()
+
+l = Lex() # Lexer
+p = Pars() # Parser
+
 from typeconv import *
+
 parsed_tokens = ()
 
 prog = open(sys.argv[1], "r").read()
 env = {"errors" : {}, "globalvars": {}}
 gen = ()
 
+#All the assembly sections
+section_bss = [
+    "section .bss\n", 
+    "  digitSpace resb 100\n", 
+    "  digitSpacePos resb 8\n"
+    ]
 
-section_text = ["section .text\n", "    global _start\n", "_start:\n"]
-section_data = ["section .data\n"]
+section_text = [
+    "section .text\n", 
+    "    global _start\n",  
+    "_start:\n"
+    ]
+
+section_data = [
+    "section .data\n"
+    ]
 
 
 
 
-
-for line in prog.splitlines():
+def LexAndParse():
+    global parsed_tokens
+    for line in prog.splitlines():
    
-    if len(line) != 0 and  line.startswith("//") == False and line.isspace() == False:
-        y = p.parse(l.tokenize(line))
-        parsed_tokens += (y,)
-    else : pass
+        if len(line) != 0 and  line.startswith("//") == False and line.isspace() == False:
+            y = p.parse(l.tokenize(line))
+            parsed_tokens += (y,)
+        else : pass
 
+LexAndParse()
 
 def crossreference_functions(obj) :
     tokens = obj
@@ -235,51 +252,49 @@ def crossreference_blocks(obj):
 
 
     return block
+
 string_at_index = 0
+
+
+INSTRUNCTION_WRITE_STRING = 0
+INSTRUNCTION_WRITE_EXPR = 1
+
+KEYWORD_WRITE = "op_write"
+
+EXPRESSION_STRING = "expr_string"
+EXPRESSION_ADD = "expr_add"
+EXPRESSION_SUB = "expr_sub"
+EXPRESSION_MUL = "expr_mul"
+EXPRESSION_DIV = "expr_div"
+EXPRESSION_IDENTIFIER = "identifier"
+
 def walktree(obj, funcname):
     global string_at_index
     
     pos = 0
     while pos < len(obj):
         node = obj[pos]
-        if node[0] == "op_write":
-            x = walktree((node[1],), funcname)
-            section_text.append(f'   ; write "{x}"\n')
-            section_text.append("   mov rax, 1 \n")
-            section_text.append("   mov rdi, 1 \n")
+        if node[0] == KEYWORD_WRITE:
+          write_instruction_values = walktree((node[1],), funcname)
+          if write_instruction_values[0] == INSTRUNCTION_WRITE_STRING:   
+            
+            section_text.append(f'   ; write "{write_instruction_values[0]}"\n')
+            section_text.append("    mov rax, 1 \n")
+            section_text.append("    mov rdi, 1 \n")
             section_text.append(f'   mov rsi, string_at_index_{string_at_index}\n')
             section_text.append(f'   mov rdx, string_at_index_{string_at_index}_len\n')
             section_text.append("   syscall\n")
             section_text.append("\n")
             pos += 1
-        elif node[0] == "expr_string":
-            res = [i for j in node[1].split() for i in (j, ' ')][:-1]
-       
-            string = ""
-        
-            for i in res:
-                if i == "\\n":
-                    i = i.replace("\\n", "\n")
-                    string += i
-                elif i == "\\t":
-                    i = i.replace("\\t", "\t")
-                    string += i
-                elif i == "\\r":
-                    i = i.replace("\\r", "\r")
-                    string += i
 
-                elif i == "\\s":
-                    i = i.replace("\\s", " ")
-                    string += i
+          elif write_instruction_values[0] == INSTRUNCTION_WRITE_EXPR:
+            section_text.append(f"   ; write {write_instruction_values[1]} {write_instruction_values[2]} {write_instruction_values[3]} , poping it from the rax\n")
+            section_text.append("   call _printDigit\n")
+            section_text.append(f"\n")
+            pos += 1
 
-                elif i.startswith("{") and i.endswith("}"):
-                
-                    x = i[1:-1]
-                    v = p.parse(l.tokenize(x))
-                    
-                    string += str(walktree((v,), funcname))
-                    
-                else :  string += i
+        elif node[0] == EXPRESSION_STRING:
+            string = node[1]
             string_at_index += 1
             section_data.append(f'   ; "{string}"\n')
             section_data.append(f'  string_at_index_{string_at_index} db "{string}" \n')
@@ -287,9 +302,58 @@ def walktree(obj, funcname):
             section_data.append(f"\n")
             
             pos += 1
-            return string
-                
-        else : assert False , f"Not implemented node {node[1]}"
+            return (INSTRUNCTION_WRITE_STRING, string)
+        
+        elif node[0] == EXPRESSION_ADD:
+            if node[1][0] and node[2][0] != EXPRESSION_IDENTIFIER :
+                section_text.append(f"   ; push {node[1][1]} + {node[2][1]} to the rax\n")
+                section_text.append(f"   mov rax, {node[1][1]}\n")
+                section_text.append(f"   mov rbx, {node[2][1]}\n")
+                section_text.append(f"   add rax, rbx\n")
+                section_text.append("\n")
+                pos += 1
+            
+                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "+" , node[2][1])
+            
+            else : assert False , f"Not implemented"
+
+        elif node[0] == EXPRESSION_SUB :
+
+            if node[1][0] and node[2][0] != EXPRESSION_IDENTIFIER :
+                section_text.append(f"   ; push {node[1][1]} - {node[2][1]} to rax \n")
+                section_text.append(f"    mov rax, {node[1][1]}\n")
+                section_text.append(f"    mov rbx, {node[2][1]}\n")
+                section_text.append(f"    sub rax, rbx\n")
+                section_data.append(f"\n")
+                pos += 1
+                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "-" , node[2][1])
+
+            else : assert False , f"Not implemented"
+
+        elif node[0] == EXPRESSION_MUL :
+
+          if node[1][0] and node[2][0] != EXPRESSION_IDENTIFIER :
+                section_text.append(f"   ; push {node[1][1]} * {node[2][1]} to rax \n")
+                section_text.append(f"    mov rax, {node[1][1]}\n")
+                section_text.append(f"    mov rbx, {node[2][1]}\n")
+                section_text.append(f"    mul rbx\n")
+                section_data.append(f"\n")
+                pos += 1
+                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "*" , node[2][1])
+
+          else : assert False , f"Not implemented"
+
+        
+        elif node[0] == EXPRESSION_DIV :
+                section_text.append(f"   ; push {node[1][1]} / {node[2][1]} to rax \n")
+                section_text.append(f"    mov rax, {node[1][1]}\n")
+                section_text.append(f"    mov rbx, {node[2][1]}\n")
+                section_text.append(f"    div rbx\n")
+                section_data.append(f"\n")
+                pos += 1
+                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "/" , node[2][1])
+
+        else : assert False , f"Not implemented instruction inside of compilation {node[1]}"
         
     
 
@@ -301,15 +365,71 @@ walktree(env["main"], "main")
 filename = sys.argv[1]
 out = open(f"{filename[:4]}.asm", "w+")
 
+def generate_assembly():
 
-out.write("\n")
+    out.write("\n")
 
-section_text.append("   mov rax, 60\n")
-section_text.append("   mov rdi, 0\n")
-section_text.append("   syscall\n")
+    section_text.append("   mov rax, 60\n")
+    section_text.append("   mov rdi, 0\n")
+    section_text.append("   syscall\n")
 
-for line in section_data:
-    out.write(line)
+    for line in section_bss : 
+        out.write(line)
 
-for line in section_text:
-    out.write(line)
+    
+    out.write("\n")
+
+    for line in section_data:
+        out.write(line)
+
+
+    out.write("\n")
+
+    for line in section_text:
+        out.write(line)
+
+    out.write("\n")
+
+
+    print_digit_set = [
+    "_printDigit: \n", 
+    " mov rcx , digitSpace \n", 
+    " mov rbx, 10\n", 
+    " mov [rcx], rbx\n", 
+    " inc rcx\n", 
+    " mov [digitSpacePos], rcx\n", 
+    "\n","_printDigitLoop:\n", 
+    " mov rdx, 0\n", 
+    " mov rbx, 10\n", 
+    " div rbx\n", 
+    " push rax\n", 
+    " add rdx, 48\n", 
+    " mov rcx, [digitSpacePos]\n", 
+    " mov [rcx], dl\n", 
+    " inc rcx\n", 
+    " mov [digitSpacePos], rcx\n", 
+    " pop rax\n", " cmp rax, 0\n", 
+    " jne _printDigitLoop\n", 
+    "\n","_printDigitLoop2:\n",
+
+    '''mov rcx, [digitSpacePos]
+ 
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, rcx
+    mov rdx, 1
+    syscall
+ 
+    mov rcx, [digitSpacePos]
+    dec rcx
+    mov [digitSpacePos], rcx
+ 
+    cmp rcx, digitSpace
+    jge _printDigitLoop2
+ 
+    ret \n''']
+    for line in print_digit_set :
+        out.write(line)
+    out.write("\n")
+
+generate_assembly()
