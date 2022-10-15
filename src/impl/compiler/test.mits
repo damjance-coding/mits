@@ -1,3 +1,6 @@
 function main() {
-    write 2 + 1
+   int64 z = 15 * 3 
+   int64 y = 15 + 15
+   write y
+   write z
 } fin

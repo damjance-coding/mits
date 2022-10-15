@@ -2,18 +2,48 @@
 section .bss
   digitSpace resb 100
   digitSpacePos resb 8
+   z resb 8
+   y resb 8
 
 section .data
 
 section .text
     global _start
 _start:
-   ; push 2 + 1 to the rax
-   mov rax, 2
-   mov rbx, 1
-   add rax, rbx
+   push 15
 
-   ; write 2 + 1 , poping it from the rax
+   push 3
+
+   pop rax
+   pop rbx
+   mul rbx
+   push rax
+
+   pop rax
+   mov [z], rax
+
+   push 15
+
+   push 15
+
+   pop rax
+   pop rbx
+   add rax, rbx
+   push rax
+
+   pop rax
+   mov [y], rax
+
+  mov rax, [y]
+  push rax
+
+   pop rax
+   call _printDigit
+
+  mov rax, [z]
+  push rax
+
+   pop rax
    call _printDigit
 
    mov rax, 60

@@ -1,4 +1,4 @@
-import subprocess
+from ast import Global
 from errors import *
 from lexer import Lex
 from parser import Pars
@@ -253,107 +253,136 @@ def crossreference_blocks(obj):
 
     return block
 
-string_at_index = 0
+string_at_index = -1
+
+Intigers = []
+Strings  = []
+
+KEYWORD_WRITE    = "op_write"
+
+EXPR_STRING      = 1
+EXPR_NUM_OR_OP   = 2
+
+VAR_ASSIGN_INT32  = "var_assign_int32"
+VAR_ASSIGN_INT64  = "var_assign_int64"
 
 
-INSTRUNCTION_WRITE_STRING = 0
-INSTRUNCTION_WRITE_EXPR = 1
-
-KEYWORD_WRITE = "op_write"
-
-EXPRESSION_STRING = "expr_string"
-EXPRESSION_ADD = "expr_add"
-EXPRESSION_SUB = "expr_sub"
-EXPRESSION_MUL = "expr_mul"
-EXPRESSION_DIV = "expr_div"
-EXPRESSION_IDENTIFIER = "identifier"
+OPERATION_DIV    = "expr_div"
+OPERATION_ADD    = "expr_add"
+OPERATION_SUB    = "expr_sub"
+OPERATION_MUL    = "expr_mul"
+OPERATION_STRING = "expr_string"
+OPERATION_NUM    = "expr_int"
+OPERATION_STRING = "expr_string"
 
 def walktree(obj, funcname):
     global string_at_index
-    
+    global Intigers
+    global Strings
     pos = 0
     while pos < len(obj):
         node = obj[pos]
         if node[0] == KEYWORD_WRITE:
-          write_instruction_values = walktree((node[1],), funcname)
-          if write_instruction_values[0] == INSTRUNCTION_WRITE_STRING:   
-            
-            section_text.append(f'   ; write "{write_instruction_values[0]}"\n')
-            section_text.append("    mov rax, 1 \n")
-            section_text.append("    mov rdi, 1 \n")
-            section_text.append(f'   mov rsi, string_at_index_{string_at_index}\n')
-            section_text.append(f'   mov rdx, string_at_index_{string_at_index}_len\n')
-            section_text.append("   syscall\n")
+          op_id = walktree((node[1],), funcname)
+         
+          
+          if op_id == EXPR_NUM_OR_OP:   
+            section_text.append("   pop rax\n")
+            section_text.append("   call _printDigit\n")
             section_text.append("\n")
             pos += 1
-
-          elif write_instruction_values[0] == INSTRUNCTION_WRITE_EXPR:
-            section_text.append(f"   ; write {write_instruction_values[1]} {write_instruction_values[2]} {write_instruction_values[3]} , poping it from the rax\n")
-            section_text.append("   call _printDigit\n")
-            section_text.append(f"\n")
+          elif op_id == EXPR_STRING :
+            assert False , "Not implemented"
             pos += 1
-
-        elif node[0] == EXPRESSION_STRING:
-            string = node[1]
-            string_at_index += 1
-            section_data.append(f'   ; "{string}"\n')
-            section_data.append(f'  string_at_index_{string_at_index} db "{string}" \n')
-            section_data.append(f'  string_at_index_{string_at_index}_len equ $ - string_at_index_{string_at_index} \n')
-            section_data.append(f"\n")
-            
-            pos += 1
-            return (INSTRUNCTION_WRITE_STRING, string)
+           
         
-        elif node[0] == EXPRESSION_ADD:
-            if node[1][0] and node[2][0] != EXPRESSION_IDENTIFIER :
-                section_text.append(f"   ; push {node[1][1]} + {node[2][1]} to the rax\n")
-                section_text.append(f"   mov rax, {node[1][1]}\n")
-                section_text.append(f"   mov rbx, {node[2][1]}\n")
-                section_text.append(f"   add rax, rbx\n")
+        elif node[0] == OPERATION_NUM:
+            section_text.append(f"   push {node[1]}\n")
+            section_text.append("\n")
+            pos += 1
+            return EXPR_NUM_OR_OP
+        
+        elif node[0] == OPERATION_ADD:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   pop rax\n")
+            section_text.append("   pop rbx\n")
+            section_text.append("   add rax, rbx\n")
+            section_text.append("   push rax\n")
+            section_text.append("\n")
+            pos += 1
+            return EXPR_NUM_OR_OP
+        
+        elif node[0] == OPERATION_SUB:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   pop rbx\n")
+            section_text.append("   pop rax\n")
+            section_text.append("   sub rax, rbx\n")
+            section_text.append("   push rax\n")
+            section_text.append("\n")
+            pos += 1
+            return EXPR_NUM_OR_OP
+
+        
+        elif node[0] == OPERATION_MUL:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   pop rax\n")
+            section_text.append("   pop rbx\n")
+            section_text.append("   mul rbx\n")
+            section_text.append("   push rax\n")
+            section_text.append("\n")
+            pos += 1
+            return EXPR_NUM_OR_OP
+
+        
+        elif node[0] == OPERATION_DIV:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   pop rbx\n")
+            section_text.append("   pop rax\n")
+            section_text.append("   div rbx\n")
+            section_text.append("   push rax\n")
+            section_text.append("\n")
+            pos += 1
+            return EXPR_NUM_OR_OP
+        elif node[0] == VAR_ASSIGN_INT32:
+            section_bss.append(f"   {node[1]} resb 4\n")
+            walktree((node[2],), funcname)
+            section_text.append("   pop rax\n")
+            section_text.append(f"   mov [{node[1]}], rax\n")
+            section_text.append("\n")
+            Intigers.append(node[1])
+            pos += 1
+
+        elif node[0] == VAR_ASSIGN_INT64:
+            section_bss.append(f"   {node[1]} resb 8\n")
+            walktree((node[2],), funcname)
+            section_text.append("   pop rax\n")
+            section_text.append(f"   mov [{node[1]}], rax\n")
+            section_text.append("\n")
+            Intigers.append(node[1])
+            pos += 1
+
+        elif node[0] == "identifier":
+            if node[1] in Intigers:
+                section_text.append(f"  mov rax, [{node[1]}]\n")
+                section_text.append("  push rax\n")
                 section_text.append("\n")
                 pos += 1
-            
-                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "+" , node[2][1])
-            
-            else : assert False , f"Not implemented"
-
-        elif node[0] == EXPRESSION_SUB :
-
-            if node[1][0] and node[2][0] != EXPRESSION_IDENTIFIER :
-                section_text.append(f"   ; push {node[1][1]} - {node[2][1]} to rax \n")
-                section_text.append(f"    mov rax, {node[1][1]}\n")
-                section_text.append(f"    mov rbx, {node[2][1]}\n")
-                section_text.append(f"    sub rax, rbx\n")
-                section_data.append(f"\n")
-                pos += 1
-                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "-" , node[2][1])
-
-            else : assert False , f"Not implemented"
-
-        elif node[0] == EXPRESSION_MUL :
-
-          if node[1][0] and node[2][0] != EXPRESSION_IDENTIFIER :
-                section_text.append(f"   ; push {node[1][1]} * {node[2][1]} to rax \n")
-                section_text.append(f"    mov rax, {node[1][1]}\n")
-                section_text.append(f"    mov rbx, {node[2][1]}\n")
-                section_text.append(f"    mul rbx\n")
-                section_data.append(f"\n")
-                pos += 1
-                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "*" , node[2][1])
-
-          else : assert False , f"Not implemented"
-
+                return EXPR_NUM_OR_OP
+            elif node[1] in Strings:
+                assert False, "Not implemented"
         
-        elif node[0] == EXPRESSION_DIV :
-                section_text.append(f"   ; push {node[1][1]} / {node[2][1]} to rax \n")
-                section_text.append(f"    mov rax, {node[1][1]}\n")
-                section_text.append(f"    mov rbx, {node[2][1]}\n")
-                section_text.append(f"    div rbx\n")
-                section_data.append(f"\n")
-                pos += 1
-                return (INSTRUNCTION_WRITE_EXPR, node[1][1], "/" , node[2][1])
+        elif node[0] ==  OPERATION_STRING:
+            assert False, "Not implemented"
+            
+            pos += 1
+            return EXPR_STRING
 
-        else : assert False , f"Not implemented instruction inside of compilation {node[1]}"
+
+        else : assert False , f"Not implemented instruction inside of compilation {node}"
         
     
 

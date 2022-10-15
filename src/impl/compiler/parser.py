@@ -119,14 +119,18 @@ class Pars(Parser):
     @_('"-" expr %prec UMINUS')
     def expr(self, p):
         return ("expr_neg_num", p.expr)
-
-    @_('IDENTIFIER "=" expr', 'IDENTIFIER "=" condition')
+    #IDENTIFIER "=" condition'
+    @_('INT32 IDENTIFIER "=" expr',)
     def var_assign(self , p):
-        return ("var_assign", p.IDENTIFIER , p[2])
+        return ("var_assign_int32", p.IDENTIFIER , p.expr)
 
-    @_('GLOBAL IDENTIFIER "=" expr', 'GLOBAL IDENTIFIER "=" condition')
+    @_('INT64 IDENTIFIER "=" expr',)
     def var_assign(self , p):
-        return ("global_var_assign", p.IDENTIFIER , p[3])
+        return ("var_assign_int64", p.IDENTIFIER , p.expr)
+
+    # @_('GLOBAL IDENTIFIER "=" expr', 'GLOBAL IDENTIFIER "=" condition')
+    # def var_assign(self , p):
+    #     return ("global_var_assign", p.IDENTIFIER , p[3])
 
     @_('"(" expr ")"')
     def expr(self ,p):
