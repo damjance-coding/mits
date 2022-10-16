@@ -128,6 +128,10 @@ class Pars(Parser):
     def var_assign(self , p):
         return ("var_assign_int64", p.IDENTIFIER , p.expr)
 
+    @_('STR IDENTIFIER "=" expr',)
+    def var_assign(self , p):
+        return ("var_assign_str", p.IDENTIFIER , p.expr)
+
     # @_('GLOBAL IDENTIFIER "=" expr', 'GLOBAL IDENTIFIER "=" condition')
     # def var_assign(self , p):
     #     return ("global_var_assign", p.IDENTIFIER , p[3])

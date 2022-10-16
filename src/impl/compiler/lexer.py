@@ -7,7 +7,7 @@ class Lex(Lexer):
 
  
 
-    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT, ASSERT, ERROR, THROW, INT32, INT64 }
+    tokens = {FUNCTION , IDENTIFIER , WRITE, STRING ,  NUMBER,  ARROWOP, EQEQ, IF, ELSE, NOTEQ, EQGTHAN , EQSTHAN, WHILE, FLOAT, GLOBAL, INCLUDE, ARRAY, ARGV, ARGC,PARAM, RETURN, TRUE, FALSE,   FOR , IN, TYPEOF, END, TRY, EXCEPT, ASSERT, ERROR, THROW, INT32, INT64, STR }
     literals = {"{", "}", "+", "-", "*", "/", "(", ")", "=", "<", ">", ",", "[", "]", ":", "%", "^"}
 
     ignore = '\t \n'
@@ -18,6 +18,8 @@ class Lex(Lexer):
     @_(r'\n+')
     def ignore_newline(self, t):
         self.lineno += len(t.value)
+    
+    STR   = r"str"
     INT32 = r"int32"
     INT64 = r"int64"
     ERROR = r"Error"

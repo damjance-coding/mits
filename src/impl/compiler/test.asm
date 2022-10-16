@@ -2,50 +2,19 @@
 section .bss
   digitSpace resb 100
   digitSpacePos resb 8
-   z resb 8
-   y resb 8
 
 section .data
+   x: db 0x48,0x65,0x6c,0x6c,0x6f,0x20,0x77,0x6f,0x72,0x6c,0x64,0x21, 10
 
 section .text
     global _start
 _start:
-   push 15
-
-   push 3
-
-   pop rax
-   pop rbx
-   mul rbx
-   push rax
-
-   pop rax
-   mov [z], rax
-
-   push 15
-
-   push 15
-
-   pop rax
-   pop rbx
-   add rax, rbx
-   push rax
-
-   pop rax
-   mov [y], rax
-
-  mov rax, [y]
-  push rax
-
-   pop rax
-   call _printDigit
-
-  mov rax, [z]
-  push rax
-
-   pop rax
-   call _printDigit
-
+   push 13
+   mov rax, 1
+   mov rdi, 1
+   mov rsi, x
+  pop rdx
+   syscall
    mov rax, 60
    mov rdi, 0
    syscall

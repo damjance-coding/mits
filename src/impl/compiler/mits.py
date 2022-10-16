@@ -259,13 +259,14 @@ Intigers = []
 Strings  = []
 
 KEYWORD_WRITE    = "op_write"
-
+EXPR_INT64_OR_INT32_IDENTIFIER = 3
+EXPR_STRING_IDENTIFIER = 4
 EXPR_STRING      = 1
 EXPR_NUM_OR_OP   = 2
 
 VAR_ASSIGN_INT32  = "var_assign_int32"
 VAR_ASSIGN_INT64  = "var_assign_int64"
-
+VAR_ASSIGN_STR    =  "var_assign_str"
 
 OPERATION_DIV    = "expr_div"
 OPERATION_ADD    = "expr_add"
@@ -275,6 +276,8 @@ OPERATION_STRING = "expr_string"
 OPERATION_NUM    = "expr_int"
 OPERATION_STRING = "expr_string"
 
+
+
 def walktree(obj, funcname):
     global string_at_index
     global Intigers
@@ -283,16 +286,31 @@ def walktree(obj, funcname):
     while pos < len(obj):
         node = obj[pos]
         if node[0] == KEYWORD_WRITE:
+          
           op_id = walktree((node[1],), funcname)
+ 
          
           
-          if op_id == EXPR_NUM_OR_OP:   
+          if op_id[0] == EXPR_NUM_OR_OP or op_id[0] == EXPR_INT64_OR_INT32_IDENTIFIER:   
             section_text.append("   pop rax\n")
             section_text.append("   call _printDigit\n")
             section_text.append("\n")
             pos += 1
-          elif op_id == EXPR_STRING :
-            assert False , "Not implemented"
+          elif op_id[0] == EXPR_STRING :
+           
+            section_text.append("   mov rax, 1\n")
+            section_text.append("   mov rdi, 1\n")
+            section_text.append(f"   mov rsi, string_literal_at_index_{string_at_index}\n")
+            section_text.append(f"  pop rdx\n")
+            section_text.append("   syscall\n")
+            section_text.append("\n")
+            pos += 1
+          elif op_id[0] == EXPR_STRING_IDENTIFIER:
+            section_text.append("   mov rax, 1\n")
+            section_text.append("   mov rdi, 1\n")
+            section_text.append(f"   mov rsi, {op_id[1]}\n")
+            section_text.append(f"  pop rdx\n")
+            section_text.append("   syscall\n")
             pos += 1
            
         
@@ -300,7 +318,7 @@ def walktree(obj, funcname):
             section_text.append(f"   push {node[1]}\n")
             section_text.append("\n")
             pos += 1
-            return EXPR_NUM_OR_OP
+            return (EXPR_NUM_OR_OP,)
         
         elif node[0] == OPERATION_ADD:
             walktree((node[1],), funcname)
@@ -311,7 +329,7 @@ def walktree(obj, funcname):
             section_text.append("   push rax\n")
             section_text.append("\n")
             pos += 1
-            return EXPR_NUM_OR_OP
+            return (EXPR_NUM_OR_OP,)
         
         elif node[0] == OPERATION_SUB:
             walktree((node[1],), funcname)
@@ -322,7 +340,7 @@ def walktree(obj, funcname):
             section_text.append("   push rax\n")
             section_text.append("\n")
             pos += 1
-            return EXPR_NUM_OR_OP
+            return (EXPR_NUM_OR_OP,)
 
         
         elif node[0] == OPERATION_MUL:
@@ -334,7 +352,7 @@ def walktree(obj, funcname):
             section_text.append("   push rax\n")
             section_text.append("\n")
             pos += 1
-            return EXPR_NUM_OR_OP
+            return (EXPR_NUM_OR_OP,)
 
         
         elif node[0] == OPERATION_DIV:
@@ -346,7 +364,7 @@ def walktree(obj, funcname):
             section_text.append("   push rax\n")
             section_text.append("\n")
             pos += 1
-            return EXPR_NUM_OR_OP
+            return (EXPR_NUM_OR_OP,)
         elif node[0] == VAR_ASSIGN_INT32:
             section_bss.append(f"   {node[1]} resb 4\n")
             walktree((node[2],), funcname)
@@ -364,22 +382,34 @@ def walktree(obj, funcname):
             section_text.append("\n")
             Intigers.append(node[1])
             pos += 1
-
+        
+        elif node[0] == VAR_ASSIGN_STR:
+            if node[2][0] == OPERATION_STRING:
+                
+                section_data.append(f"   {node[1]}: db %s, 10\n" % ",".join(map(hex, list(bytes(node[2][1], "utf-8")))))
+                section_text.append("   push %d\n" % (len(node[2][1]) + 1))
+                Strings.append(node[1])
+                pos += 1
+            else : assert False , "Not implemented at var_assign_str"
         elif node[0] == "identifier":
             if node[1] in Intigers:
                 section_text.append(f"  mov rax, [{node[1]}]\n")
                 section_text.append("  push rax\n")
                 section_text.append("\n")
                 pos += 1
-                return EXPR_NUM_OR_OP
+                return (EXPR_INT64_OR_INT32_IDENTIFIER,)
             elif node[1] in Strings:
-                assert False, "Not implemented"
+                return (EXPR_STRING_IDENTIFIER, node[1])
         
         elif node[0] ==  OPERATION_STRING:
-            assert False, "Not implemented"
             
+            string_at_index += 1
+            section_data.append(f'  string_literal_at_index_{string_at_index}: db %s, 10\n' % ",".join(map(hex, list(bytes(node[1], "utf-8")))))
+            section_text.append(f"  push %d" % (len(node[1]) + 1) + "\n")
+            section_data.append("\n")
             pos += 1
-            return EXPR_STRING
+            return (EXPR_STRING,)
+
 
 
         else : assert False , f"Not implemented instruction inside of compilation {node}"
