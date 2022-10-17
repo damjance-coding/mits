@@ -1,4 +1,5 @@
 from ast import Global
+from configparser import SectionProxy
 from errors import *
 from lexer import Lex
 from parser import Pars
@@ -215,6 +216,10 @@ def crossreference_blocks(obj):
             
             stack.append((node[0], node[1] , index))
 
+        elif node[0] == "else":
+            elseindex.append(index)
+            stack.append(("else", "elem1", index))
+
         elif node[0] == "for_start" :
             stack.append((node[0], node[1] , index))
         elif node[0] == "op_close_end":
@@ -238,6 +243,7 @@ def crossreference_blocks(obj):
                     block[ifidn] = (p[0], p[1], p[2], elseind, index)
                     block = tuple(block)
                 else :
+                    block = list(block)
                     block[pos[2]] = (pos[0], pos[1], index)
                     block = tuple(block)
             else :
@@ -253,16 +259,30 @@ def crossreference_blocks(obj):
 
     return block
 
+string_literals = []
+
 string_at_index = -1
 
-Intigers = []
-Strings  = []
+Intigers = {}
+Strings  = {}
+
+
+IDENTIFIER = "identifier"
 
 KEYWORD_WRITE    = "op_write"
 EXPR_INT64_OR_INT32_IDENTIFIER = 3
 EXPR_STRING_IDENTIFIER = 4
 EXPR_STRING      = 1
 EXPR_NUM_OR_OP   = 2
+
+ELSE_ST = "else"
+IF_STM = "op_if_start"
+
+CLOSE_CB = "op_close_end"
+
+CONDITION_EQ_EQ = "con_eq_eq"
+CONDITION_GT    = "con_g_than"
+CONDITION_ST    = "con_s_than"
 
 VAR_ASSIGN_INT32  = "var_assign_int32"
 VAR_ASSIGN_INT64  = "var_assign_int64"
@@ -277,11 +297,13 @@ OPERATION_NUM    = "expr_int"
 OPERATION_STRING = "expr_string"
 
 
+print(env["main"])
 
 def walktree(obj, funcname):
     global string_at_index
     global Intigers
     global Strings
+    global string_literals
     pos = 0
     while pos < len(obj):
         node = obj[pos]
@@ -300,8 +322,8 @@ def walktree(obj, funcname):
            
             section_text.append("   mov rax, 1\n")
             section_text.append("   mov rdi, 1\n")
-            section_text.append(f"   mov rsi, string_literal_at_index_{string_at_index}\n")
-            section_text.append(f"  pop rdx\n")
+            section_text.append(f"   mov rsi, string_literal_at_index_{op_id[1]}\n")
+            section_text.append(f"   pop rdx\n")
             section_text.append("   syscall\n")
             section_text.append("\n")
             pos += 1
@@ -371,7 +393,7 @@ def walktree(obj, funcname):
             section_text.append("   pop rax\n")
             section_text.append(f"   mov [{node[1]}], rax\n")
             section_text.append("\n")
-            Intigers.append(node[1])
+            Intigers[node[1]] = node[2][1]
             pos += 1
 
         elif node[0] == VAR_ASSIGN_INT64:
@@ -380,18 +402,18 @@ def walktree(obj, funcname):
             section_text.append("   pop rax\n")
             section_text.append(f"   mov [{node[1]}], rax\n")
             section_text.append("\n")
-            Intigers.append(node[1])
+            Intigers[node[1]] = node[2][1]
             pos += 1
-        
+             
         elif node[0] == VAR_ASSIGN_STR:
             if node[2][0] == OPERATION_STRING:
                 
                 section_data.append(f"   {node[1]}: db %s, 10\n" % ",".join(map(hex, list(bytes(node[2][1], "utf-8")))))
-                section_text.append("   push %d\n" % (len(node[2][1]) + 1))
-                Strings.append(node[1])
+                section_text.append("     push %d\n" % (len(node[2][1]) + 1))
+                Strings[node[1]] = node[2][1]
                 pos += 1
             else : assert False , "Not implemented at var_assign_str"
-        elif node[0] == "identifier":
+        elif node[0] == IDENTIFIER:
             if node[1] in Intigers:
                 section_text.append(f"  mov rax, [{node[1]}]\n")
                 section_text.append("  push rax\n")
@@ -402,15 +424,99 @@ def walktree(obj, funcname):
                 return (EXPR_STRING_IDENTIFIER, node[1])
         
         elif node[0] ==  OPERATION_STRING:
-            
-            string_at_index += 1
-            section_data.append(f'  string_literal_at_index_{string_at_index}: db %s, 10\n' % ",".join(map(hex, list(bytes(node[1], "utf-8")))))
-            section_text.append(f"  push %d" % (len(node[1]) + 1) + "\n")
-            section_data.append("\n")
+            if node[1] not in string_literals:
+                string_at_index += 1
+                
+                section_data.append(f'  string_literal_at_index_{string_at_index}: db %s, 10\n' % ",".join(map(hex, list(bytes(node[1], "utf-8")))))
+                section_text.append(f"   push %d" % (len(node[1]) + 1) + "\n")
+                section_data.append("\n")
+                pos += 1
+                string_literals.append(node[1])
+                return (EXPR_STRING, string_at_index)
+            else :
+                section_text.append("   push %d" % (len(node[1]) + 1) + "\n")
+                pos += 1
+                return (EXPR_STRING, string_literals.index(node[1]))
+
+
+
+        elif node[0] == CONDITION_EQ_EQ:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   mov rcx, 0\n")
+            section_text.append("   mov rdx, 1\n")
+            section_text.append("   pop rax\n")
+            section_text.append("   pop rbx\n")
+            section_text.append("   cmp rax, rbx\n")
+            section_text.append("   cmove rcx, rdx\n")
+            section_text.append("   push rcx\n")
+            section_text.append("   \n")
             pos += 1
-            return (EXPR_STRING,)
+
+        elif node[0] == CONDITION_ST:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   mov rcx, 0\n")
+            section_text.append("   mov rdx, 1\n")
+            section_text.append("   pop rax\n")
+            section_text.append("   pop rbx\n")
+            section_text.append("   cmp rax, rbx\n")
+            section_text.append("   cmovs rdx, rcx\n")
+            section_text.append("   push rdx\n")
+            section_text.append("   \n")
+
+            pos += 1
+        elif node[0] == CONDITION_GT:
+            walktree((node[1],), funcname)
+            walktree((node[2],), funcname)
+            section_text.append("   mov rcx, 0\n")
+            section_text.append("   mov rdx, 1\n")
+            section_text.append("   pop rax\n")
+            section_text.append("   pop rbx\n")
+            section_text.append("   cmp rax, rbx\n")
+            section_text.append("   cmovg rdx, rcx\n")
+            section_text.append("   push rdx\n")
+            section_text.append("   \n")
+
+            pos += 1
+        elif node[0] == CLOSE_CB:
+            section_text.append(f"addr_{pos}: \n")
+            pos += 1
+        elif node[0] == IF_STM:
+            if len(node) != 5: 
+              if node[1][0] == CONDITION_EQ_EQ or node[1][0] == CONDITION_GT or node[1][0] == CONDITION_ST:
+
+                    walktree((node[1],), funcname)
+
+                    section_text.append("   pop rax\n")
+                    section_text.append("   test rax, rax\n")
+                    section_text.append(f"   jz addr_{node[2]}\n")
+                    section_text.append("   \n")
+
+                    pos += 1
+              else :
+                    
+                    assert False, "Not implemented"
+            else :
+                if node[1][0] == CONDITION_EQ_EQ or node[1][0] == CONDITION_GT or node[1][0] == CONDITION_ST:
 
 
+                    walktree((node[1],), funcname)
+
+                    section_text.append("   pop rax\n")
+                    section_text.append("   test rax, rax\n")
+                    section_text.append(f"   jz addr_{node[3]}\n")
+                   
+                    section_text.append("   \n")
+
+                    pos += 1
+                else :
+                    assert False, "Not implemented"
+
+        elif node[0] == ELSE_ST:
+            section_text.append(f"jnz addr_{node[2]}\n")
+            section_text.append(f"addr_{pos}: \n")
+            pos += 1
 
         else : assert False , f"Not implemented instruction inside of compilation {node}"
         
@@ -451,27 +557,28 @@ def generate_assembly():
 
 
     print_digit_set = [
-    "_printDigit: \n", 
-    " mov rcx , digitSpace \n", 
-    " mov rbx, 10\n", 
-    " mov [rcx], rbx\n", 
-    " inc rcx\n", 
-    " mov [digitSpacePos], rcx\n", 
-    "\n","_printDigitLoop:\n", 
-    " mov rdx, 0\n", 
-    " mov rbx, 10\n", 
-    " div rbx\n", 
-    " push rax\n", 
-    " add rdx, 48\n", 
-    " mov rcx, [digitSpacePos]\n", 
-    " mov [rcx], dl\n", 
-    " inc rcx\n", 
-    " mov [digitSpacePos], rcx\n", 
-    " pop rax\n", " cmp rax, 0\n", 
-    " jne _printDigitLoop\n", 
+    "_printDigit: \n", "\n", 
+    "   mov rcx , digitSpace \n", 
+    "   mov rbx, 10\n", 
+    "   mov [rcx], rbx\n", 
+    "   inc rcx\n", 
+    "   mov [digitSpacePos], rcx\n", 
+    "\n","_printDigitLoop:\n", "\n", 
+    "   mov rdx, 0\n", 
+    "   mov rbx, 10\n", 
+    "   div rbx\n", 
+    "   push rax\n", 
+    "   add rdx, 48\n", 
+    "   mov rcx, [digitSpacePos]\n", 
+    "   mov [rcx], dl\n", 
+    "   inc rcx\n", 
+    "   mov [digitSpacePos], rcx\n", 
+    "   pop rax\n", "   cmp rax, 0\n", 
+    "   jne _printDigitLoop\n", 
     "\n","_printDigitLoop2:\n",
 
-    '''mov rcx, [digitSpacePos]
+    '''
+    mov rcx, [digitSpacePos]
  
     mov rax, 1
     mov rdi, 1
@@ -492,3 +599,4 @@ def generate_assembly():
     out.write("\n")
 
 generate_assembly()
+
