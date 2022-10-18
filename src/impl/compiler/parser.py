@@ -131,6 +131,9 @@ class Pars(Parser):
     @_('STR IDENTIFIER "=" expr',)
     def var_assign(self , p):
         return ("var_assign_str", p.IDENTIFIER , p.expr)
+    @_('IDENTIFIER "=" expr',)
+    def var_assign(self , p):
+        return ("var_assign_change_var_val", p.IDENTIFIER , p.expr)
 
     # @_('GLOBAL IDENTIFIER "=" expr', 'GLOBAL IDENTIFIER "=" condition')
     # def var_assign(self , p):

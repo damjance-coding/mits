@@ -1,5 +1,3 @@
-from ast import Global
-from configparser import SectionProxy
 from errors import *
 from lexer import Lex
 from parser import Pars
@@ -35,7 +33,11 @@ section_data = [
     ]
 
 
-
+def TestInt64orInt32(num):
+    if num < 2147483648:
+        return 32
+    else :
+        return 64
 
 def LexAndParse():
     global parsed_tokens
@@ -287,6 +289,9 @@ CONDITION_ST    = "con_s_than"
 VAR_ASSIGN_INT32  = "var_assign_int32"
 VAR_ASSIGN_INT64  = "var_assign_int64"
 VAR_ASSIGN_STR    =  "var_assign_str"
+CHANGE_VAR_VAL    = "var_assign_change_var_val"
+
+
 
 OPERATION_DIV    = "expr_div"
 OPERATION_ADD    = "expr_add"
@@ -297,7 +302,59 @@ OPERATION_NUM    = "expr_int"
 OPERATION_STRING = "expr_string"
 
 
-print(env["main"])
+
+
+
+def type_check_program(program):
+    tc_ints = []
+    tc_strs = []
+    for node in program:
+        if node[0] == VAR_ASSIGN_INT32:
+            if node[2][0] == OPERATION_STRING:
+                raise TypeError(f"ERROR: Cannot assign value of type  `string` to variable `{node[1]}` of type `int32`")
+            elif node[2][0] == IDENTIFIER:
+                if node[2][1] in tc_ints:
+                    tc_ints.append(node[2][1])
+                elif node[2][1] in tc_strs:
+                    raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int32`")
+                else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
+            else : tc_ints.append(node[1])
+        elif node[0] == VAR_ASSIGN_INT64:
+            if node[2][0] == OPERATION_STRING:
+                raise TypeError(f"ERROR: Cannot assign value of type  `string` to variable `{node[1]}` of type `int64`")
+            elif node[2][0] == IDENTIFIER:
+                if node[2][1] in tc_ints:
+                    tc_ints.append(node[2][1])
+                elif node[2][1] in tc_strs:
+                    raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int64`")
+                else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
+            else : tc_ints.append(node[1])   
+        elif node[0]  == VAR_ASSIGN_STR:
+            if node[2][0] == OPERATION_ADD or node[2][0] == OPERATION_DIV or node[2][0] == OPERATION_MUL or node[2][0] == OPERATION_SUB:
+                raise TypeError(f"ERROR: Cannot assign value of type  int/float to variable `{node[1]}` of type `string`")
+            elif node[2][0] == IDENTIFIER:
+                if node[2][1] in tc_strs:
+                    tc_ints.append(node[2][1])
+                elif node[2][1] in tc_ints:
+                    raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `int` to variable `{node[1]}` of type `str`")
+                else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
+            else : tc_strs.append(node[1])
+        elif node[0] == CHANGE_VAR_VAL:
+            if node[1] in tc_ints:
+                if node[2][0] == OPERATION_STRING:
+                    raise TypeError(f"ERROR: Cannot assign value of type  `string` to variable `{node[1]}` of type `int64`")
+            elif node[2][0] == IDENTIFIER:
+                if node[2][1] in tc_ints:
+                    pass
+                elif node[2][1] in tc_strs:
+                    raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int64`")
+                else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
+            elif node[1] in tc_strs :
+                assert False , "Value changing for the variables of type `string` not implemented"
+            else :
+                raise NameErr(f"ERROR: Unknow variable `{node[1]}`")
+
+type_check_program(parsed_tokens_and_function)
 
 def walktree(obj, funcname):
     global string_at_index
@@ -323,7 +380,7 @@ def walktree(obj, funcname):
             section_text.append("   mov rax, 1\n")
             section_text.append("   mov rdi, 1\n")
             section_text.append(f"   mov rsi, string_literal_at_index_{op_id[1]}\n")
-            section_text.append(f"   pop rdx\n")
+            section_text.append("   pop rdx\n")
             section_text.append("   syscall\n")
             section_text.append("\n")
             pos += 1
@@ -337,11 +394,20 @@ def walktree(obj, funcname):
            
         
         elif node[0] == OPERATION_NUM:
-            section_text.append(f"   push {node[1]}\n")
-            section_text.append("\n")
-            pos += 1
-            return (EXPR_NUM_OR_OP,)
-        
+            if TestInt64orInt32(node[1]) == 32:
+                section_text.append(f"   push {node[1]}\n")
+                section_text.append("\n")
+                pos += 1
+                return (EXPR_NUM_OR_OP,)
+            elif  TestInt64orInt32(node[1]) == 64:
+                section_text.append(f"   mov rax,{node[1]}\n")
+                section_text.append(f"   push rax\n")
+                section_text.append("   xor rax,rax\n")
+                section_text.append("\n")
+                pos += 1
+                return (EXPR_NUM_OR_OP,)
+            else : 
+                assert False, "Error inside of TestInt64orInt32() fucntion!"
         elif node[0] == OPERATION_ADD:
             walktree((node[1],), funcname)
             walktree((node[2],), funcname)
@@ -412,7 +478,11 @@ def walktree(obj, funcname):
                 section_text.append("     push %d\n" % (len(node[2][1]) + 1))
                 Strings[node[1]] = node[2][1]
                 pos += 1
-            else : assert False , "Not implemented at var_assign_str"
+            elif node[2][0] == IDENTIFIER:
+                    section_data.append(f"   {node[1]}: equ {node[2][1]}\n")
+                    Strings[node[1]] = node[2][1]
+                    pos += 1
+                
         elif node[0] == IDENTIFIER:
             if node[1] in Intigers:
                 section_text.append(f"  mov rax, [{node[1]}]\n")
@@ -516,6 +586,14 @@ def walktree(obj, funcname):
         elif node[0] == ELSE_ST:
             section_text.append(f"jnz addr_{node[2]}\n")
             section_text.append(f"addr_{pos}: \n")
+            pos += 1
+
+        elif node[0] == "var_assign_change_var_val":
+            walktree((node[2],), funcname)
+            section_text.append("   pop rax\n")
+            section_text.append(f"   mov [{node[1]}], rax\n")
+            section_text.append("   xor rax, rax\n")
+            section_text.append("\n")
             pos += 1
 
         else : assert False , f"Not implemented instruction inside of compilation {node}"

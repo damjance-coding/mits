@@ -1,16 +1,6 @@
 function main() {
-    int64 x = 12 
-    if (x < 13){
-        if(x == 11) {
-            write "Went into nested if"
-        }
-        else {
-            write "went into nested if else"
-        }
-    }
-    else {
-        write "test"
-    }
-    write "RADU"
-    
+    int32 x = 4608533498688228557
+    write x
+    x = 1
+    write x
 } fin

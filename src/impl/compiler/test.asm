@@ -2,22 +2,16 @@
 section .bss
   digitSpace resb 100
   digitSpacePos resb 8
-   x resb 8
+   x resb 4
 
 section .data
-  string_literal_at_index_0: db 0x57,0x65,0x6e,0x74,0x20,0x69,0x6e,0x74,0x6f,0x20,0x6e,0x65,0x73,0x74,0x65,0x64,0x20,0x69,0x66, 10
-
-  string_literal_at_index_1: db 0x77,0x65,0x6e,0x74,0x20,0x69,0x6e,0x74,0x6f,0x20,0x6e,0x65,0x73,0x74,0x65,0x64,0x20,0x69,0x66,0x20,0x65,0x6c,0x73,0x65, 10
-
-  string_literal_at_index_2: db 0x74,0x65,0x73,0x74, 10
-
-  string_literal_at_index_3: db 0x52,0x41,0x44,0x55, 10
-
 
 section .text
     global _start
 _start:
-   push 12
+   mov rax,4608533498688228557
+   push rax
+   xor rax,rax
 
    pop rax
    mov [x], rax
@@ -25,72 +19,20 @@ _start:
   mov rax, [x]
   push rax
 
-   push 13
+   pop rax
+   call _printDigit
 
-   mov rcx, 0
-   mov rdx, 1
+   push 1
+
    pop rax
-   pop rbx
-   cmp rax, rbx
-   cmovs rdx, rcx
-   push rdx
-   
-   pop rax
-   test rax, rax
-   jz addr_9
-   
+   mov [x], rax
+   xor rax, rax
+
   mov rax, [x]
   push rax
 
-   push 11
-
-   mov rcx, 0
-   mov rdx, 1
    pop rax
-   pop rbx
-   cmp rax, rbx
-   cmove rcx, rdx
-   push rcx
-   
-   pop rax
-   test rax, rax
-   jz addr_5
-   
-   push 20
-   mov rax, 1
-   mov rdi, 1
-   mov rsi, string_literal_at_index_0
-   pop rdx
-   syscall
-
-addr_4: 
-jnz addr_7
-addr_5: 
-   push 25
-   mov rax, 1
-   mov rdi, 1
-   mov rsi, string_literal_at_index_1
-   pop rdx
-   syscall
-
-addr_7: 
-addr_8: 
-jnz addr_11
-addr_9: 
-   push 5
-   mov rax, 1
-   mov rdi, 1
-   mov rsi, string_literal_at_index_2
-   pop rdx
-   syscall
-
-addr_11: 
-   push 5
-   mov rax, 1
-   mov rdi, 1
-   mov rsi, string_literal_at_index_3
-   pop rdx
-   syscall
+   call _printDigit
 
    mov rax, 60
    mov rdi, 0
