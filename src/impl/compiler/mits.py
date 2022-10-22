@@ -1,3 +1,4 @@
+from tokenize import String
 from errors import *
 from lexer import Lex
 from parser import Pars
@@ -211,26 +212,26 @@ def crossreference_blocks(obj):
     exceptindex = []
 
     for index , node in enumerate(block) :
-        if node[0] == "op_if_start":
+        if node[0] == IF_STM:
             ifindex.append(index)
             stack.append((node[0], node[1] , index))
-        elif node[0] == "op_start_while" :
+        elif node[0] == WHILE_ST :
             
             stack.append((node[0], node[1] , index))
 
-        elif node[0] == "else":
+        elif node[0] == ELSE_ST:
             elseindex.append(index)
-            stack.append(("else", "elem1", index))
+            stack.append((ELSE_ST, "elem1", index))
 
         elif node[0] == "for_start" :
             stack.append((node[0], node[1] , index))
-        elif node[0] == "op_close_end":
+        elif node[0] == CLOSE_CB:
             pos = stack.pop()
             block = list(block)
             
-            if block[pos[2]][0] == "op_if_start" or block[pos[2]][0] == "op_start_while"  or block[pos[2]][0] == "for_start" or block[pos[2]][0] == "else" or block[pos[2]][0] == "try_start" or block[pos[2]][0] == "except_start":
+            if block[pos[2]][0] == IF_STM or block[pos[2]][0] == WHILE_ST  or block[pos[2]][0] == "for_start" or block[pos[2]][0] == ELSE_ST or block[pos[2]][0] == "try_start" or block[pos[2]][0] == "except_start":
                 
-                if block[pos[2]][0] == "else":
+                if block[pos[2]][0] == ELSE_ST:
                     elseind = elseindex.pop()
                     ifidn = ifindex.pop()
                     p = block[ifidn]
@@ -265,22 +266,27 @@ string_literals = []
 
 string_at_index = -1
 
-Intigers = {}
-Strings  = {}
+Intigers = []
+Strings  = []
 
 
 IDENTIFIER = "identifier"
 
 KEYWORD_WRITE    = "op_write"
 EXPR_INT64_OR_INT32_IDENTIFIER = 3
-EXPR_STRING_IDENTIFIER = 4
-EXPR_STRING      = 1
+EXPR_STRING_OR_IDENTIFIER = 4
+
 EXPR_NUM_OR_OP   = 2
 
 ELSE_ST = "else"
 IF_STM = "op_if_start"
+WHILE_ST = "op_start_while"
+
 
 CLOSE_CB = "op_close_end"
+
+PLUSPLUS = "plusplus"
+MINUSMINUS = "minusminus"
 
 CONDITION_EQ_EQ = "con_eq_eq"
 CONDITION_GT    = "con_g_than"
@@ -289,6 +295,11 @@ CONDITION_ST    = "con_s_than"
 VAR_ASSIGN_INT32  = "var_assign_int32"
 VAR_ASSIGN_INT64  = "var_assign_int64"
 VAR_ASSIGN_STR    =  "var_assign_str"
+
+VAR_ASSIGN_UINT64 = "var_assign_uint64"
+VAR_ASSIGN_UINT32 = "var_assign_uint32"
+VAR_ASSIGN_USTR   = "var_assign_ustr"
+
 CHANGE_VAR_VAL    = "var_assign_change_var_val"
 
 
@@ -306,62 +317,103 @@ OPERATION_STRING = "expr_string"
 
 
 def type_check_program(program):
-    tc_ints = []
-    tc_strs = []
+    global Strings
+    global Intigers
     for node in program:
         if node[0] == VAR_ASSIGN_INT32:
             if node[2][0] == OPERATION_STRING:
                 raise TypeError(f"ERROR: Cannot assign value of type  `string` to variable `{node[1]}` of type `int32`")
             elif node[2][0] == IDENTIFIER:
-                if node[2][1] in tc_ints:
-                    tc_ints.append(node[2][1])
-                elif node[2][1] in tc_strs:
+                if node[2][1] in Intigers:
+                    Intigers.append(node[2][1])
+                elif node[2][1] in Strings:
                     raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int32`")
                 else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
-            else : tc_ints.append(node[1])
+            elif node[2][0] == OPERATION_NUM:
+                if TestInt64orInt32(node[2][1]) == 64:
+                    raise ValueError("ERROR: Value too high for type `int32`")
+                else : Intigers.append(node[1])    
+            else : Intigers.append(node[1])
         elif node[0] == VAR_ASSIGN_INT64:
             if node[2][0] == OPERATION_STRING:
                 raise TypeError(f"ERROR: Cannot assign value of type  `string` to variable `{node[1]}` of type `int64`")
             elif node[2][0] == IDENTIFIER:
-                if node[2][1] in tc_ints:
-                    tc_ints.append(node[2][1])
-                elif node[2][1] in tc_strs:
+                if node[2][1] in Intigers:
+                    Intigers.append(node[2][1])
+                elif node[2][1] in Strings:
                     raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int64`")
                 else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
-            else : tc_ints.append(node[1])   
+
+        elif node[0] == VAR_ASSIGN_UINT64:
+            Intigers.append(node[1])
+                
+        elif node[0] == VAR_ASSIGN_UINT32:
+            Intigers.append(node[1])
+        elif node[0] == VAR_ASSIGN_USTR:
+            Strings.append(node[1])         
         elif node[0]  == VAR_ASSIGN_STR:
-            if node[2][0] == OPERATION_ADD or node[2][0] == OPERATION_DIV or node[2][0] == OPERATION_MUL or node[2][0] == OPERATION_SUB:
-                raise TypeError(f"ERROR: Cannot assign value of type  int/float to variable `{node[1]}` of type `string`")
+          
+          if len(node)  ==  3:
+            if node[2][0] == OPERATION_ADD or node[2][0] == OPERATION_DIV or node[2][0] == OPERATION_MUL or node[2][0] == OPERATION_SUB or node[2][0] == OPERATION_NUM:
+                raise TypeError(f"ERROR: Cannot assign value of type int/float to variable `{node[1]}` of type `string`")
             elif node[2][0] == IDENTIFIER:
-                if node[2][1] in tc_strs:
-                    tc_ints.append(node[2][1])
-                elif node[2][1] in tc_ints:
+                if node[2][1] in Strings:
+                    Strings.append(node[1])
+                elif node[2][1] in Intigers:
                     raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `int` to variable `{node[1]}` of type `str`")
                 else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
-            else : tc_strs.append(node[1])
+            else : Strings.append(node[1])
+          else : 
+            if node[3][0] == OPERATION_ADD or node[3][0] == OPERATION_DIV or node[3][0] == OPERATION_MUL or node[3][0] == OPERATION_SUB or node[3][0] == OPERATION_NUM:
+                raise TypeError(f"ERROR: Cannot assign value of type int/float to variable `{node[1]}` of type `string`")
+            elif node[2][0] == IDENTIFIER:
+                if node[2][1] in Strings:
+                    Strings.append(node[1])
+                elif node[2][1] in Intigers:
+                    raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `int` to variable `{node[1]}` of type `str`")
+                else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
+            else : Strings.append(node[1])
         elif node[0] == CHANGE_VAR_VAL:
-            if node[1] in tc_ints:
+            if node[1] in Intigers:
                 if node[2][0] == OPERATION_STRING:
                     raise TypeError(f"ERROR: Cannot assign value of type  `string` to variable `{node[1]}` of type `int64`")
-            elif node[2][0] == IDENTIFIER:
-                if node[2][1] in tc_ints:
-                    pass
-                elif node[2][1] in tc_strs:
-                    raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int64`")
-                else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
-            elif node[1] in tc_strs :
-                assert False , "Value changing for the variables of type `string` not implemented"
+                elif node[2][0] == IDENTIFIER:
+                    if node[2][1] in Intigers:
+                        pass
+                    elif node[2][1] in Strings:
+                        raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `string` to variable `{node[1]}` of type `int64`")
+                    else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
+            elif node[1] in Strings :
+                if node[2][0] == OPERATION_ADD or node[2][0] == OPERATION_DIV or node[2][0] == OPERATION_MUL or node[2][0] == OPERATION_SUB or node[2][0] == OPERATION_NUM:
+                    raise TypeError(f"ERROR: Cannot assign value of type  int/float to variable `{node[1]}` of type `string`")
+                elif node[2][0] == IDENTIFIER:
+                    if node[2][1] in Strings:
+                       pass
+                    elif node[2][1] in Intigers:
+                        raise TypeError(f"ERROR: Cannot assign value of variable `{node[2][1]}` of type  `int` to variable `{node[1]}` of type `str`")
+                    else : raise TypeError(f"ERROR: Unknow variable {node[2][1]}")
             else :
                 raise NameErr(f"ERROR: Unknow variable `{node[1]}`")
 
 type_check_program(parsed_tokens_and_function)
+
+loop_endloop_index = -1
+
+while_loop_index = -1
+
+string_bytes = {}
 
 def walktree(obj, funcname):
     global string_at_index
     global Intigers
     global Strings
     global string_literals
+    global loop_endloop_index
+    global while_loop_index
+    global string_bytes
     pos = 0
+    
+    
     while pos < len(obj):
         node = obj[pos]
         if node[0] == KEYWORD_WRITE:
@@ -375,20 +427,13 @@ def walktree(obj, funcname):
             section_text.append("   call _printDigit\n")
             section_text.append("\n")
             pos += 1
-          elif op_id[0] == EXPR_STRING :
-           
+          
+          elif op_id[0] == EXPR_STRING_OR_IDENTIFIER:
+            
             section_text.append("   mov rax, 1\n")
             section_text.append("   mov rdi, 1\n")
-            section_text.append(f"   mov rsi, string_literal_at_index_{op_id[1]}\n")
+            section_text.append("   pop rsi,\n")
             section_text.append("   pop rdx\n")
-            section_text.append("   syscall\n")
-            section_text.append("\n")
-            pos += 1
-          elif op_id[0] == EXPR_STRING_IDENTIFIER:
-            section_text.append("   mov rax, 1\n")
-            section_text.append("   mov rdi, 1\n")
-            section_text.append(f"   mov rsi, {op_id[1]}\n")
-            section_text.append(f"  pop rdx\n")
             section_text.append("   syscall\n")
             pos += 1
            
@@ -459,7 +504,7 @@ def walktree(obj, funcname):
             section_text.append("   pop rax\n")
             section_text.append(f"   mov [{node[1]}], rax\n")
             section_text.append("\n")
-            Intigers[node[1]] = node[2][1]
+            
             pos += 1
 
         elif node[0] == VAR_ASSIGN_INT64:
@@ -468,21 +513,54 @@ def walktree(obj, funcname):
             section_text.append("   pop rax\n")
             section_text.append(f"   mov [{node[1]}], rax\n")
             section_text.append("\n")
-            Intigers[node[1]] = node[2][1]
+          
             pos += 1
              
         elif node[0] == VAR_ASSIGN_STR:
-            if node[2][0] == OPERATION_STRING:
+          if len(node) == 3:
+                loop_endloop_index += 1
+                section_bss.append(f"   {node[1]} resb {len(node[2][1]) + 1}\n")
+                walktree((node[2],), funcname)
+                section_text.append("   xor RBP, RBP\n")       
+                section_text.append("   pop rdx\n")
+                section_text.append("  \n")
+                section_text.append(f'''
+.loop_{loop_endloop_index}:
+    mov al, byte [rdx + RBP] ; get the nth character of other.
+    cmp al, 0x00 ; if we reached the end of the string
+    je .endLoop_{loop_endloop_index} ; end the function
+    mov [{node[1]} + RBP], al ; write the nth character of other to nth position of text
+    inc RBP ; increase counter
+    jmp .loop_{loop_endloop_index} ; loop
+
+.endLoop_{loop_endloop_index}:
+    ''') 
                 
-                section_data.append(f"   {node[1]}: db %s, 10\n" % ",".join(map(hex, list(bytes(node[2][1], "utf-8")))))
-                section_text.append("     push %d\n" % (len(node[2][1]) + 1))
-                Strings[node[1]] = node[2][1]
+                string_bytes[node[1]] = len(node[2][1]) + 1
                 pos += 1
-            elif node[2][0] == IDENTIFIER:
-                    section_data.append(f"   {node[1]}: equ {node[2][1]}\n")
-                    Strings[node[1]] = node[2][1]
-                    pos += 1
+          else: 
                 
+                assert node[2][0] == OPERATION_NUM, "Not implemented"
+                loop_endloop_index += 1
+                section_bss.append(f"   {node[1]} resb {node[2][1] + 1}\n")
+                walktree((node[3],), funcname)
+                section_text.append("   xor RBP, RBP\n")       
+                section_text.append("   pop rdx\n")
+                section_text.append("  \n")
+                section_text.append(f'''
+.loop_{loop_endloop_index}:
+    mov al, byte [rdx + RBP] ; get the nth character of other.
+    cmp al, 0x00 ; if we reached the end of the string
+    je .endLoop_{loop_endloop_index} ; end the function
+    mov [{node[1]} + RBP], al ; write the nth character of other to nth position of text
+    inc RBP ; increase counter
+    jmp .loop_{loop_endloop_index} ; loop
+
+.endLoop_{loop_endloop_index}:
+    ''') 
+                
+                string_bytes[node[1]] = node[2][1] + 1
+                pos += 1
         elif node[0] == IDENTIFIER:
             if node[1] in Intigers:
                 section_text.append(f"  mov rax, [{node[1]}]\n")
@@ -491,7 +569,9 @@ def walktree(obj, funcname):
                 pos += 1
                 return (EXPR_INT64_OR_INT32_IDENTIFIER,)
             elif node[1] in Strings:
-                return (EXPR_STRING_IDENTIFIER, node[1])
+                section_text.append("   push %d\n" % string_bytes[node[1]])
+                section_text.append("   push %s\n" % node[1])                
+                return (EXPR_STRING_OR_IDENTIFIER,)
         
         elif node[0] ==  OPERATION_STRING:
             if node[1] not in string_literals:
@@ -499,18 +579,38 @@ def walktree(obj, funcname):
                 
                 section_data.append(f'  string_literal_at_index_{string_at_index}: db %s, 10\n' % ",".join(map(hex, list(bytes(node[1], "utf-8")))))
                 section_text.append(f"   push %d" % (len(node[1]) + 1) + "\n")
+                section_text.append(f"   push string_literal_at_index_{string_at_index}\n")
                 section_data.append("\n")
                 pos += 1
                 string_literals.append(node[1])
-                return (EXPR_STRING, string_at_index)
+                return (EXPR_STRING_OR_IDENTIFIER, string_at_index)
             else :
                 section_text.append("   push %d" % (len(node[1]) + 1) + "\n")
+                section_text.append(f"   push string_literal_at_index_{string_literals.index(node[1])}\n")
                 pos += 1
-                return (EXPR_STRING, string_literals.index(node[1]))
+                return (EXPR_STRING_OR_IDENTIFIER, string_literals.index(node[1]))
 
 
 
         elif node[0] == CONDITION_EQ_EQ:
+           
+           
+         if node[1][0] == OPERATION_STRING and node[2][0] == OPERATION_STRING or node[1][1] in Strings or node[2][1] in Strings:
+          
+           walktree((node[1],), funcname)
+           walktree((node[2],), funcname)
+           section_text.append("   mov RBP, 0\n")
+           section_text.append("   mov rdx, 1\n")
+           section_text.append("    pop rsi\n")
+           section_text.append("    pop rcx\n")
+           section_text.append("   pop rdi\n")
+           section_text.append("   repe cmpsb\n")
+           section_text.append("   cmove RBP, rdx\n")
+           section_text.append("   push RBP\n")
+           pos += 1
+
+
+         else :
             walktree((node[1],), funcname)
             walktree((node[2],), funcname)
             section_text.append("   mov rcx, 0\n")
@@ -522,6 +622,7 @@ def walktree(obj, funcname):
             section_text.append("   push rcx\n")
             section_text.append("   \n")
             pos += 1
+         return
 
         elif node[0] == CONDITION_ST:
             walktree((node[1],), funcname)
@@ -550,7 +651,12 @@ def walktree(obj, funcname):
 
             pos += 1
         elif node[0] == CLOSE_CB:
-            section_text.append(f"addr_{pos}: \n")
+            if len(node) != 3:
+                section_text.append(f"addr_{pos}: \n")
+            else :
+                assert node[2] == WHILE_ST
+                section_text.append(f"    jmp while_loop_at_index_{while_loop_index}\n")
+                section_text.append(f"addr_{pos}: \n")
             pos += 1
         elif node[0] == IF_STM:
             if len(node) != 5: 
@@ -588,14 +694,71 @@ def walktree(obj, funcname):
             section_text.append(f"addr_{pos}: \n")
             pos += 1
 
-        elif node[0] == "var_assign_change_var_val":
-            walktree((node[2],), funcname)
-            section_text.append("   pop rax\n")
-            section_text.append(f"   mov [{node[1]}], rax\n")
-            section_text.append("   xor rax, rax\n")
-            section_text.append("\n")
+
+        elif node[0] == CHANGE_VAR_VAL:
+            if node[1] in Intigers:
+                walktree((node[2],), funcname)
+                section_text.append("   pop rax\n")
+                section_text.append(f"   mov [{node[1]}], rax\n")
+                section_text.append("   xor rax, rax\n")
+                section_text.append("\n")
+                pos += 1
+            elif node[1] in Strings :
+               
+                loop_endloop_index += 1
+                walktree((node[2],), funcname)
+                section_text.append("   xor RBP, RBP\n")       
+                
+                section_text.append("   pop rdx\n")
+                section_text.append(f'''
+.loop_{loop_endloop_index}:
+    mov al, byte [rdx + RBP] ; get the nth character of other.
+    cmp al, 0x00 ; if we reached the end of the string
+    je .endLoop_{loop_endloop_index} ; end the function
+    mov [{node[1]} + RBP], al ; write the nth character of other to nth position of text
+    inc RBP ; increase counter
+    jmp .loop_{loop_endloop_index} ; loop
+
+.endLoop_{loop_endloop_index}:
+    ''')
+                section_text.append("   push 25\n")
+              
+                pos += 1
+             
+                
+            
+
+        elif node[0] == WHILE_ST:
+            while_loop_index += 1
+            section_text.append(f"while_loop_at_index_{while_loop_index}:\n")
+            walktree((node[1],), funcname)
+            section_text.append(f"   jz addr_{node[2]}\n")
+            obj = list(obj)
+            obj[node[2]] = (CLOSE_CB, "elem1", WHILE_ST)
+            obj = tuple(obj)
             pos += 1
 
+        elif node[0] == VAR_ASSIGN_UINT64:
+            section_bss.append(f"    {node[1]} resb 8\n")
+            pos += 1
+
+        elif node[0] == VAR_ASSIGN_USTR:
+            if node[2][0] == OPERATION_NUM:
+                string_bytes[node[1]] = node[2][1]
+                section_bss.append(f"    {node[1]} resb {node[2][1]}\n")
+                pos += 1
+            else : assert False, "Not implemented"
+          
+        elif node[0] == VAR_ASSIGN_UINT32:
+            section_bss.append(f"    {node[1]} resb 4\n")
+            pos += 1
+
+        elif node[0] == PLUSPLUS:
+            section_text.append(f"   inc byte [{node[1]}]\n")
+            pos += 1                
+        elif node[0] == MINUSMINUS:
+            section_text.append(f"   dec byte [{node[1]}]\n")
+            pos += 1
         else : assert False , f"Not implemented instruction inside of compilation {node}"
         
     

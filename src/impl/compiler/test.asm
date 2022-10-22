@@ -2,38 +2,37 @@
 section .bss
   digitSpace resb 100
   digitSpacePos resb 8
-   x resb 4
+   x resb 21
 
 section .data
+  string_literal_at_index_0: db 0x48,0x65,0x6c,0x6c,0x6f,0x20,0x77,0x6f,0x72,0x6c,0x64,0x21, 10
+
 
 section .text
     global _start
 _start:
-   mov rax,4608533498688228557
-   push rax
-   xor rax,rax
+   push 13
+   push string_literal_at_index_0
+   xor RBP, RBP
+   pop rdx
+  
 
-   pop rax
-   mov [x], rax
+.loop_0:
+    mov al, byte [rdx + RBP] ; get the nth character of other.
+    cmp al, 0x00 ; if we reached the end of the string
+    je .endLoop_0 ; end the function
+    mov [x + RBP], al ; write the nth character of other to nth position of text
+    inc RBP ; increase counter
+    jmp .loop_0 ; loop
 
-  mov rax, [x]
-  push rax
-
-   pop rax
-   call _printDigit
-
-   push 1
-
-   pop rax
-   mov [x], rax
-   xor rax, rax
-
-  mov rax, [x]
-  push rax
-
-   pop rax
-   call _printDigit
-
+.endLoop_0:
+       push 21
+   push x
+   mov rax, 1
+   mov rdi, 1
+   pop rsi,
+   pop rdx
+   syscall
    mov rax, 60
    mov rdi, 0
    syscall

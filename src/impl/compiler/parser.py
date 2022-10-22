@@ -8,10 +8,11 @@ class Pars(Parser):
     precedence = (
         ('left', '+', '-',),
         ('left', '*', '/'),
-        
+  
         ('right', 'UMINUS'),
         )
-
+    
+    debugfile = "debug/debug.txt"
 
     @_('FUNCTION IDENTIFIER "(" ")"  "{" ')
     def statement(self ,p):
@@ -51,7 +52,7 @@ class Pars(Parser):
         return ("op_close",) 
 
     @_('IDENTIFIER ARRAY "=" expr')
-    def statement(self ,p):
+    def var_assign(self ,p):
         
          return ("add_new_to_arr", p.IDENTIFIER, p.ARRAY, p.expr)
     @_('expr')
@@ -92,7 +93,9 @@ class Pars(Parser):
     @_("FALSE")
     def condition(self ,p):
         return ("false",)
-
+    # @_("expr")
+    # def condition(self, p):
+    #     return p.expr
     @_("STRING")
     def expr(self ,p):
         return ("expr_string", p.STRING)
@@ -128,9 +131,26 @@ class Pars(Parser):
     def var_assign(self , p):
         return ("var_assign_int64", p.IDENTIFIER , p.expr)
 
-    @_('STR IDENTIFIER "=" expr',)
+    @_('INT64 IDENTIFIER ',)
     def var_assign(self , p):
-        return ("var_assign_str", p.IDENTIFIER , p.expr)
+        return ("var_assign_uint64", p.IDENTIFIER )    
+
+    
+    @_('INT32 IDENTIFIER ',)
+    def var_assign(self , p):
+        return ("var_assign_uint32", p.IDENTIFIER )   
+
+    @_('STR IDENTIFIER ":" expr',)
+    def var_assign(self , p):
+        return ("var_assign_ustr", p.IDENTIFIER, p.expr )     
+
+
+    @_('STR IDENTIFIER "=" expr', 'STR IDENTIFIER ":" expr "=" expr')
+    def var_assign(self , p):
+        if len(p) == 4:
+            return ("var_assign_str", p.IDENTIFIER , p.expr)
+        else :
+            return ("var_assign_str", p.IDENTIFIER , p.expr0, p.expr1)
     @_('IDENTIFIER "=" expr',)
     def var_assign(self , p):
         return ("var_assign_change_var_val", p.IDENTIFIER , p.expr)
@@ -189,6 +209,10 @@ class Pars(Parser):
     @_('IDENTIFIER "+" "+" ')
     def statement(self , p):
         return ("plusplus", p.IDENTIFIER)
+
+    @_('IDENTIFIER "-" "-" ')
+    def statement(self , p):
+        return ("minusminus", p.IDENTIFIER)
 
     @_('expr EQSTHAN expr')
     def condition(self ,p):
